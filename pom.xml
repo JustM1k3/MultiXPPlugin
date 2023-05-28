@@ -79,7 +79,7 @@
         <dependency>
             <groupId>me.oxolotel</groupId>
             <artifactId>PluginUtils</artifactId>
-            <version>1.4.0-Dev4</version>
+            <version>1.4.0-Dev6</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
