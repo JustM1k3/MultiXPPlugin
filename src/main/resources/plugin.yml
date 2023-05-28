@@ -2,3 +2,5 @@ name: MultiXP
 version: '${project.version}'
 main: me.ym.Ym
 api-version: 1.19
+commands:
+  MutliXP:
