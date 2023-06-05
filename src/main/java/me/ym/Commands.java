@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@Name("MultiXP")
+@Name("XP")
 public class Commands implements PlayerCommand {
 
 
