@@ -7,23 +7,21 @@ import me.oxolotel.utils.wrapped.command.sender.CommandSender;
 import me.oxolotel.utils.wrapped.player.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.List;
 
 @Name("MultiXP")
 public class Commands implements PlayerCommand {
 
-    @Override
-    public boolean execute(@NotNull me.oxolotel.utils.wrapped.player.Player player, @NotNull List<String> list, @NotNull List<String> list1) {
-        return false;
-    }
+
     @NotNull
     @Override
-    public List<Command> getSubCommands(){
-        ArrayList<Command> list = new ArrayList<>();
-        list.add(new HelpCommand());
-        list.add(new CreateCommand());
-        list.add(new ZeroCommand());
-        return list;
+    public List<Command> getSubCommands() {
+        return List.of(new HelpCommand(), new CreateCommand(), new ZeroCommand());
+    }
+
+    @Override
+    public boolean execute(@NotNull Player player, @NotNull List<String> list, @NotNull List<String> list1) {
+        return false;
     }
 
     @Name("help")

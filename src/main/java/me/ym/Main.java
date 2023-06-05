@@ -3,6 +3,7 @@ package me.ym;
 import me.oxolotel.utils.wrapped.plugin.BukkitPlugin;
 import me.oxolotel.utils.wrapped.plugin.Plugin;
 import org.bukkit.command.Command;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends BukkitPlugin {
 
