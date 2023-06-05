@@ -1,12 +1,15 @@
 package me.ym;
 
+import me.oxolotel.utils.bukkit.menuManager.InventoryMenuManager;
 import me.oxolotel.utils.wrapped.command.Command;
 import me.oxolotel.utils.wrapped.command.PlayerCommand;
 import me.oxolotel.utils.wrapped.command.annotations.Name;
 import me.oxolotel.utils.wrapped.command.sender.CommandSender;
-import me.oxolotel.utils.wrapped.player.Player;
+import org.bukkit.entity.Player;
+import me.ym.gui.MultiXPMenu;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Name("MultiXP")
@@ -16,11 +19,15 @@ public class Commands implements PlayerCommand {
     @NotNull
     @Override
     public List<Command> getSubCommands() {
-        return List.of(new HelpCommand(), new CreateCommand(), new ZeroCommand());
+        ArrayList<Command> commandRegistration = new ArrayList<>();
+        commandRegistration.add(new HelpCommand());
+        commandRegistration.add(new CreateCommand());
+        commandRegistration.add(new ZeroCommand());
+        return commandRegistration;
     }
 
     @Override
-    public boolean execute(@NotNull Player player, @NotNull List<String> list, @NotNull List<String> list1) {
+    public boolean execute(@NotNull me.oxolotel.utils.wrapped.player.Player player, @NotNull List<String> list, @NotNull List<String> list1) {
         return false;
     }
 
@@ -37,6 +44,7 @@ public class Commands implements PlayerCommand {
     private static class CreateCommand implements PlayerCommand{
         @Override
         public boolean execute(@NotNull me.oxolotel.utils.wrapped.player.Player player, @NotNull List<String> list, @NotNull List<String> list1) {
+            InventoryMenuManager.getInstance().openMenu((Player) player.getPlayer(true), new MultiXPMenu(54));
             player.sendMessage("Create command");
             return true;
         }
