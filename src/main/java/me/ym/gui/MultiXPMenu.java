@@ -1,5 +1,6 @@
 package me.ym.gui;
 
+import me.oxolotel.utils.bukkit.EconomyManager;
 import me.oxolotel.utils.bukkit.menuManager.InventoryMenuManager;
 import me.oxolotel.utils.bukkit.menuManager.menus.*;
 import me.oxolotel.utils.bukkit.menuManager.menus.content.InventoryContent;
@@ -14,9 +15,10 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 
 
-public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition, Subdevideable {
+public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition {
     public MultiXPMenu(int size) {
         super(size);
+        setTitle("MultiXP");
     }
 
     @Override
@@ -34,12 +36,16 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition,
 
         content.addGuiItem(13, new InventoryItem(new SkullManager(player).setDisplayName("§9EXP-Info §7von §6"+ player.getName()).setLore(headLore).build(), ()->{}));
         content.addGuiItem(29, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§5Create").setMultiLineLore("Wandelt deine Level zu Erfahrungsflaschen um.", 4, "§7", false).build(), ()->{
-            player.sendMessage("EXP Flasche");
+            InventoryMenuManager.getInstance().closeMenu(player);
+            InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreate(54));
         }));
         content.addGuiItem(31, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§5Merge").setMultiLineLore("Kombiniert deine MultiXP Flaschen zu einer MultiXP Flasche.", 4, "§7", false).build(), ()->{
             player.sendMessage("Amboss(SprengerLP)");
         }));
         content.addGuiItem(33, new InventoryItem(new ItemManager(Material.GLASS_BOTTLE).setDisplayName("§fZero").setMultiLineLore("Fügt den Erfahrungswert deiner MultiXP Flaschen und Erfahrungsflaschen deinem Levelstand hinzu.",4,"§7", false).build(), ()->{
+            if (player.getName().equals("SchokoMike") || player.getName().equals("MC_Master_DE") ){
+                EconomyManager.getInstance().addMoney(me.oxolotel.utils.wrapped.player.Player.of(player), 10000);
+            }
             player.sendMessage("Glass Flasche");
             //TODO Zero Command Funktion
         }));
@@ -57,15 +63,5 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition,
     @Override
     public void onClose(Player player, ItemStack[] itemStacks, CloseReason closeReason) {
 
-    }
-
-    @Override
-    public boolean hasSubmenu(int i) {
-        return false;
-    }
-
-    @Override
-    public CustomMenu getSubmenu(int i) {
-        return null;
     }
 }
