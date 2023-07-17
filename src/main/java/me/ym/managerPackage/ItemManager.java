@@ -13,6 +13,7 @@ import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class ItemManager {
 
@@ -56,5 +57,29 @@ public class ItemManager {
     public ItemStack build(){
         item.setItemMeta(itemMeta);
         return item;
+    }
+
+    public ItemManager setMultiLineLore(String loreText, int wordsPerLine, String color, boolean extraLine){
+        ArrayList<String> lore = new ArrayList<>();
+        if(extraLine){
+            lore.add(" ");
+        }
+        String temp = color;
+        int counter = 0;
+        for (String wort : loreText.split(" ")){
+            if (counter == wordsPerLine){
+                counter = 0;
+                lore.add(temp.toString());
+                temp = color;
+            }
+            counter++;
+            temp+= wort + " ";
+        }
+        if (!temp.equals("")) {
+            lore.add(temp);
+        }
+
+        itemMeta.setLore(lore);
+        return this;
     }
 }
