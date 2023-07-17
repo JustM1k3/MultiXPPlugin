@@ -22,9 +22,11 @@ public class SkullManager {
     private ItemStack skullItem;
     private SkullMeta skullMeta;
 
-    public SkullManager(){
-
-    };
+    public SkullManager(Player player){
+        skullItem = new ItemStack(Material.PLAYER_HEAD);
+        skullMeta = (SkullMeta) skullItem.getItemMeta();
+        skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()));
+    }
 
     public SkullManager(String textureBase64){
         skullItem = getCustomSkull(textureBase64);
@@ -83,13 +85,4 @@ public class SkullManager {
         head.setItemMeta(skullMeta);
         return head;
     }
-
-    public ItemStack createSkullItem(Player player) {
-        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta meta = (SkullMeta) item.getItemMeta();
-        meta.setOwningPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()));
-        item.setItemMeta(meta);
-        return item;
-    }
-
 }

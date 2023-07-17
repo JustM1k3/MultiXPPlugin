@@ -30,16 +30,16 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition,
 
         ArrayList<String> headLore = new ArrayList<>();
         headLore.add("§7Level: §a" + player.getLevel());
-        //headLore.add("§7Erfahrungswert: §a" + ExpManager.getPlayerEXP(player));
+        headLore.add("§7Erfahrungswert: §a" + ExpManager.getPlayerEXP(player));
 
-        content.addGuiItem(13, new InventoryItem(new SkullManager().createSkullItem(player), ()->{}));
-        content.addGuiItem(29, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§5Create").setMultiLineLore("Wandelt deine Level zu Erfahrungsflaschen um.", 4, "§7", true).build(), ()->{
+        content.addGuiItem(13, new InventoryItem(new SkullManager(player).setDisplayName("§9EXP-Info §7von §6"+ player.getName()).setLore(headLore).build(), ()->{}));
+        content.addGuiItem(29, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§5Create").setMultiLineLore("Wandelt deine Level zu Erfahrungsflaschen um.", 4, "§7", false).build(), ()->{
             player.sendMessage("EXP Flasche");
         }));
-        content.addGuiItem(31, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§5Merge").setMultiLineLore("Kombiniert deine MultiXP Flaschen zu einer MultiXP Flasche.", 4, "§7", true).build(), ()->{
+        content.addGuiItem(31, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§5Merge").setMultiLineLore("Kombiniert deine MultiXP Flaschen zu einer MultiXP Flasche.", 4, "§7", false).build(), ()->{
             player.sendMessage("Amboss(SprengerLP)");
         }));
-        content.addGuiItem(33, new InventoryItem(new ItemManager(Material.GLASS_BOTTLE).setDisplayName("§fZero").setMultiLineLore("Fügt den Erfahrungswert deiner MultiXP Flaschen und Erfahrungsflaschen deinem Levelstand hinzu.",4,"§7", true).build(), ()->{
+        content.addGuiItem(33, new InventoryItem(new ItemManager(Material.GLASS_BOTTLE).setDisplayName("§fZero").setMultiLineLore("Fügt den Erfahrungswert deiner MultiXP Flaschen und Erfahrungsflaschen deinem Levelstand hinzu.",4,"§7", false).build(), ()->{
             player.sendMessage("Glass Flasche");
             //TODO Zero Command Funktion
         }));
