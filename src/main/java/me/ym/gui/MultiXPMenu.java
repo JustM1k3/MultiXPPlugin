@@ -35,7 +35,7 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
         headLore.add("§7Erfahrungswert: §a" + ExpManager.getPlayerEXP(player));
 
         content.addGuiItem(13, new InventoryItem(new SkullManager(player).setDisplayName("§9EXP-Info §7von §6"+ player.getName()).setLore(headLore).build(), ()->{}));
-        content.addGuiItem(29, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§5Create").setMultiLineLore("Wandelt deine Level zu Erfahrungsflaschen um.", 4, "§7", false).build(), ()->{
+        content.addGuiItem(29, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§5Create").setMultiLineLore("Wandelt deine Level zu MultiXP- oder Erfahrungsflaschen um.", 4, "§7", false).build(), ()->{
             InventoryMenuManager.getInstance().closeMenu(player);
             InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreate(54));
         }));

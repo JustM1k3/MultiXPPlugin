@@ -59,6 +59,28 @@ public class ItemManager {
         return item;
     }
 
+    public ItemManager setMultiLineLore(String loreText, String zeilenumbruch, String color, boolean extraLine){
+        ArrayList<String> lore = new ArrayList<>();
+        if(extraLine){
+            lore.add(" ");
+        }
+        String temp = color;
+        for (String wort : loreText.split(" ")){
+            if (wort.equals(zeilenumbruch)){
+                lore.add(temp);
+                temp = color;
+                continue;
+            }
+            temp+= wort + " ";
+        }
+        if (!temp.equals("")) {
+            lore.add(temp);
+        }
+
+        itemMeta.setLore(lore);
+        return this;
+    }
+
     public ItemManager setMultiLineLore(String loreText, int wordsPerLine, String color, boolean extraLine){
         ArrayList<String> lore = new ArrayList<>();
         if(extraLine){
