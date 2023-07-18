@@ -45,6 +45,33 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
     public InventoryContent getContents(Player player) {
         content = new InventoryContent();
         content.fill(0,54, new InventoryItem(new ItemManager(Material.CYAN_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
+
+        String item30name;
+        String item30lore;
+        if (isLevel){
+            item30name = "§6Levelanzahl: §a0";
+            item30lore = "Geb die Anzahl der Level an, die du /n in deiner MultiXP Flasche speichern /n möchtest.";
+            if(PacketReader.getLevelAnzahlInput().containsKey(player.getUniqueId())){
+                if (checkValidAnvilInput(player)){
+                    item30name = "§6Levelanzahl: §a" + PacketReader.getLevelAnzahlInput().get(player.getUniqueId());
+                } else {
+                    item30name = "§6Levelanzahl: §c" + PacketReader.getLevelAnzahlInput().get(player.getUniqueId());
+                    item30lore = "/n §cDie Levelanzahl-Eingabe darf nur aus Zahlen bestehen! /n /n Geb die Anzahl der Level an, die du /n in deiner MultiXP Flasche speichern /n möchtest.";
+                }
+            }
+        } else {
+            item30name = "§6Erfahrungswert: §a0";
+            item30lore = "Geb den Erfahrungswert an, den du /n in deiner MultiXP Flasche speichern /n möchtest.";
+            if(PacketReader.getLevelAnzahlInput().containsKey(player.getUniqueId())) {
+                if (PacketReader.getLevelAnzahlInput().containsKey(player.getUniqueId())) {
+                    item30name = "§6Erfahrungswert: §a" + PacketReader.getLevelAnzahlInput().get(player.getUniqueId());
+                } else {
+                    item30name = "§6Erfahrungswert: §c" + PacketReader.getLevelAnzahlInput().get(player.getUniqueId());
+                    item30lore = "/n §cDie Erfahrungswert-Eingabe darf nur aus Zahlen bestehen! /n /n Geb den Erfahrungswert an, den du /n in deiner MultiXP Flasche speichern /n möchtest.";
+                }
+            }
+        }
+
         content.fill(10,17, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
         content.fill(19,26, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
         content.fill(28,35, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
@@ -59,11 +86,8 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
                 InventoryMenuManager.getInstance().getOpenMenu(player).refresh();
             }));
 
-            String item30name = "§6Levelanzahl: §a0";
-            if(PacketReader.getLevelAnzahlInput().containsKey(player.getUniqueId())){
-                item30name = "§6Levelanzahl: §a" + PacketReader.getLevelAnzahlInput().get(player.getUniqueId());
-            }
-            content.addGuiItem(30, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName(item30name).setMultiLineLore("Geb die Anzahl der Level an, die du /n in deiner MultiXP Flasche speichern /n möchtest.", "/n", "§7", false).build(), ()->{
+
+            content.addGuiItem(30, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName(item30name).setMultiLineLore(item30lore, "/n", "§7", false).build(), ()->{
                 saveMenus(player);
                 InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
                 AnvilMenuManager.levelFix(player);
@@ -75,11 +99,8 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
                 InventoryMenuManager.getInstance().getOpenMenu(player).refresh();
             }));
 
-            String item30name = "§6Erfahrungswert: §a0";
-            if(PacketReader.getLevelAnzahlInput().containsKey(player.getUniqueId())){
-                item30name = "§6Erfahrungswert: §a" + PacketReader.getLevelAnzahlInput().get(player.getUniqueId());
-            }
-            content.addGuiItem(30, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName(item30name).setMultiLineLore("Geb den Erfahrungswert an, den du /n in deiner MultiXP Flasche speichern /n möchtest.", "/n", "§7", false).build(), ()->{
+
+            content.addGuiItem(30, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName(item30name).setMultiLineLore(item30lore, "/n", "§7", false).build(), ()->{
                 saveMenus(player);
                 InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
                 AnvilMenuManager.levelFix(player);
@@ -121,6 +142,23 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
         LinkedList<TrippleWrapper<CustomMenu, InventoryContent, Task>> tempOpenMenus = (LinkedList<TrippleWrapper<CustomMenu, InventoryContent, Task>>) ReflectionUtils.accessField(MenuView.class, a, "openMenus", LinkedList.class);
         List<CustomMenu> t = tempOpenMenus.stream().map(TrippleWrapper::getValue1).toList();
         PacketReader.openMenus.put(p.getUniqueId(), t);
+    }
+
+
+    private boolean checkValidAnvilInput(Player p) {
+        if (PacketReader.getLevelAnzahlInput().containsKey(p.getUniqueId())){
+            String input = PacketReader.getLevelAnzahlInput().get(p.getUniqueId());
+            if (input.startsWith(" ")){
+                input = input.replaceFirst(" ", "");
+            }
+
+            if (!input.matches("[0-9]+")){
+                content.fill(0,54, new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
+                return false;
+            }
+            return true;
+        }
+        return true;
     }
 }
 

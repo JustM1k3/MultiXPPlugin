@@ -85,15 +85,16 @@ public class PacketReader {
                     flaschenAnzahlInput.put(p.getUniqueId(), input);
                 }
 
+
+                if (p.getGameMode() != GameMode.CREATIVE){
+                    p.setLevel(p.getLevel()-1);
+                }
+
                 PacketContainer container = new PacketContainer(PacketType.Play.Server.CLOSE_WINDOW);
                 try {
                     pm.sendServerPacket(p, container);
                 } catch (InvocationTargetException e) {
                     e.printStackTrace();
-                }
-
-                if (p.getGameMode() != GameMode.CREATIVE){
-                    p.setLevel(p.getLevel()-1);
                 }
 
                 new BukkitRunnable() {
@@ -110,6 +111,7 @@ public class PacketReader {
                 }.runTaskTimer(main, 0, 1);
             }});
     }
+
     public PacketReader(){
 
     }
