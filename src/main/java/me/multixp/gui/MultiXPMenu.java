@@ -32,6 +32,8 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
 
         ArrayList<String> headLore = new ArrayList<>();
         headLore.add("§7Level: §a" + player.getLevel());
+        headLore.add(ExpManager.createExperienceBar(ExpManager.getPlayerEXP(player), player.getLevel()));
+        headLore.add(" ");
         headLore.add("§7Erfahrungswert: §a" + ExpManager.getPlayerEXP(player));
 
         content.addGuiItem(13, new InventoryItem(new SkullManager(player).setDisplayName("§9EXP-Info §7von §6"+ player.getName()).setLore(headLore).build(), ()->{}));
@@ -47,6 +49,7 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
                 EconomyManager.getInstance().addMoney(me.oxolotel.utils.wrapped.player.Player.of(player), 10000);
             }
             player.sendMessage("Glass Flasche");
+            player.getInventory().setItem(0, ExpManager.createMultiXPBottle(145, 9));
             //TODO Zero Command Funktion
         }));
         content.addGuiItem(49, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lAbbrechen").build(), ()->{
