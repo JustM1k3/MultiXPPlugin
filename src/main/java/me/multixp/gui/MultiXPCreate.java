@@ -1,16 +1,13 @@
-package me.ym.gui;
+package me.multixp.gui;
 
 import me.oxolotel.utils.bukkit.menuManager.InventoryMenuManager;
 import me.oxolotel.utils.bukkit.menuManager.menus.*;
 import me.oxolotel.utils.bukkit.menuManager.menus.content.InventoryContent;
 import me.oxolotel.utils.bukkit.menuManager.menus.content.InventoryItem;
-import me.ym.managerPackage.ExpManager;
-import me.ym.managerPackage.ItemManager;
+import me.multixp.managerPackage.ItemManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
 
 public class MultiXPCreate extends CustomMenu implements Closeable, SlotCondition {
 

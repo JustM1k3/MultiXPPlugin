@@ -1,6 +1,6 @@
 name: MultiXP
 version: '${project.version}'
-main: me.ym.Main
+main: me.multixp.Main
 api-version: 1.19
 commands:
   MultiXP:

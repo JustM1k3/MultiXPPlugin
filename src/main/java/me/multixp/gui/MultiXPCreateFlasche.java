@@ -1,4 +1,4 @@
-package me.ym.gui;
+package me.multixp.gui;
 
 import me.oxolotel.utils.bukkit.menuManager.InventoryMenuManager;
 import me.oxolotel.utils.bukkit.menuManager.implement.MenuView;
@@ -10,13 +10,12 @@ import me.oxolotel.utils.bukkit.menuManager.menus.content.InventoryItem;
 import me.oxolotel.utils.general.ReflectionUtils;
 import me.oxolotel.utils.general.TrippleWrapper;
 import me.oxolotel.utils.wrapped.schedule.Task;
-import me.ym.managerPackage.AnvilMenuManager;
-import me.ym.managerPackage.ItemManager;
-import me.ym.managerPackage.PacketReader;
+import me.multixp.managerPackage.AnvilMenuManager;
+import me.multixp.managerPackage.ItemManager;
+import me.multixp.managerPackage.PacketReader;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.glassfish.jaxb.runtime.v2.runtime.reflect.Lister;
 
 import java.util.LinkedList;
 import java.util.List;

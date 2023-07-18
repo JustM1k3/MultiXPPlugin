@@ -1,14 +1,12 @@
-package me.ym;
+package me.multixp;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import me.oxolotel.utils.wrapped.plugin.BukkitPlugin;
 import me.oxolotel.utils.wrapped.plugin.Plugin;
-import me.ym.managerPackage.AnvilMenuManager;
-import me.ym.managerPackage.PacketReader;
+import me.multixp.managerPackage.AnvilMenuManager;
+import me.multixp.managerPackage.PacketReader;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends BukkitPlugin {
 

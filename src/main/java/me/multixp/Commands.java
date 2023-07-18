@@ -1,12 +1,11 @@
-package me.ym;
+package me.multixp;
 
 import me.oxolotel.utils.bukkit.menuManager.InventoryMenuManager;
 import me.oxolotel.utils.wrapped.command.Command;
 import me.oxolotel.utils.wrapped.command.PlayerCommand;
 import me.oxolotel.utils.wrapped.command.annotations.Name;
-import me.oxolotel.utils.wrapped.command.sender.CommandSender;
 import org.bukkit.entity.Player;
-import me.ym.gui.MultiXPMenu;
+import me.multixp.gui.MultiXPMenu;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

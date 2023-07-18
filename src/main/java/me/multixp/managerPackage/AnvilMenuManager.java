@@ -1,4 +1,4 @@
-package me.ym.managerPackage;
+package me.multixp.managerPackage;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
