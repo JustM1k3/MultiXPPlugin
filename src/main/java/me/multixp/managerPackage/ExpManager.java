@@ -26,12 +26,25 @@ public class ExpManager {
         return xp_value;
     }
 
+    public static int getLevelFromExp(int exp){
+        int level = -1;
+
+        if (exp < 353) {
+            level = (int) (Math.sqrt(exp + 9) - 3);
+        } else if (exp > 352 && exp < 1508) {
+            level = (int) (8.1 + Math.sqrt(0.4 * (exp - 195.975)));
+        } else if (exp > 1507) {
+            level = (int) (18.056 + Math.sqrt(0.222 * (exp - 752.986)));
+        }
+        return level;
+    }
+
     private static double getplayerExpToNextLevel(Player player){
         double xp_act = getExpFromLevel(player.getLevel());
         double xp_next = getExpFromLevel(player.getLevel() + 1);
         double percentToNextLvL = player.getExp();
 
-        return xp_act + ((xp_next - xp_act) * percentToNextLvL);
+        return (xp_next - xp_act) * percentToNextLvL;
     }
 
     public static boolean checkErfahrungFlaschenInput(int flaschenAnzahl, int erfahrungswert, Player player){
