@@ -1,4 +1,4 @@
-package me.ym.managerPackage;
+package me.multixp.managerPackage;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolManager;
@@ -7,7 +7,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import me.oxolotel.utils.bukkit.menuManager.InventoryMenuManager;
 import me.oxolotel.utils.bukkit.menuManager.menus.CustomMenu;
-import me.ym.Main;
+import me.multixp.Main;
 import org.bukkit.GameMode;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;

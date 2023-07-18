@@ -1,4 +1,4 @@
-package me.ym.managerPackage;
+package me.multixp.managerPackage;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
