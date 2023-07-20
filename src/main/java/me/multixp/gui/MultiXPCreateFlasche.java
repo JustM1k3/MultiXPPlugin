@@ -234,7 +234,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
         lore.add(" ");
         lore.add("§7Erfahrungspunkte: §a" + xpWert);
         lore.add(" ");
-        lore.add("$a7Flaschenanzahl: §a" + anzahl);
+        lore.add("§a7Flaschenanzahl: §a" + anzahl);
 
         content.addGuiItem(33, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setLore(lore).build(), ()->{}));
     }
