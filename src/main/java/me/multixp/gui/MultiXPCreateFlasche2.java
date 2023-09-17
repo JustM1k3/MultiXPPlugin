@@ -52,9 +52,7 @@ public class MultiXPCreateFlasche2 extends CustomMenu implements Closeable, Slot
         content.fill(37,44, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
 
         if(!(checkValidAnvilInputLevelAnzahl(player) && checkValidAnvilInputFlaschenAnzahl(player))){
-            content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lUngültige Eingabe").setMultiLineLore("Die angegebene Levelanzahl/Flaschenanzahl /nist ungültig!", "/n", "§c", false).build(), ()->{
-                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
-            }));
+            content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lUngültige Eingabe").setMultiLineLore("Die angegebene Levelanzahl/Flaschenanzahl /n ist ungültig!", "/n", "§c", false).build(), ()->{}));
         } else {
             content.addGuiItem(33, new InventoryItem(new ItemStack(Material.AIR), ()->{}));
         }
@@ -89,9 +87,16 @@ public class MultiXPCreateFlasche2 extends CustomMenu implements Closeable, Slot
                     setResultBottle(wert, ExpManager.getLevelFromExp(wert), anzahl);
                 }
             } else {
-                content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lFehler").setMultiLineLore("Du hast nicht genügend Level/Erfahrungspunkte um die MultiXP Flasche zu erstellen!", "/n", "§c", false).build(), ()->{
-                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
-                }));
+                content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lFehler").setMultiLineLore("Du hast nicht genügend /n Level/Erfahrungspunkte um die MultiXP /n Flasche zu erstellen!", "/n", "§c", false).build(), ()->{}));
+                content.fill(0, 9, new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
+                for (int i = 9; i <= 45; i+=9) {
+                    content.addGuiItem(i,  new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
+                    content.addGuiItem(8 + i,  new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
+                }
+                content.addGuiItem(46,  new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
+                content.fill(48, 51, new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
+                content.addGuiItem(52,  new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
             }
         }
 
