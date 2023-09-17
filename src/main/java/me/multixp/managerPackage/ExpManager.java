@@ -13,7 +13,7 @@ public class ExpManager {
         return (int) (getExpFromLevel(player.getLevel()) + getplayerExpToNextLevel(player));
     }
 
-    private static double getExpFromLevel(int level){
+    public static double getExpFromLevel(int level){
         double xp_value = -1;
 
         if (level <= 16 && level >= 0) {

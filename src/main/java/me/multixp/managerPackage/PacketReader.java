@@ -31,6 +31,7 @@ public class PacketReader {
         levelAnzahlInput.remove(p.getUniqueId());
     }
 
+
     private static final HashMap<UUID,String> flaschenAnzahlInput = new HashMap<>();
     public static HashMap<UUID, String> getFlaschenAnzahlInput() {
         return flaschenAnzahlInput;
