@@ -47,7 +47,7 @@ public class MultiXPCreate extends CustomMenu implements Closeable, SlotConditio
         content.addGuiItem(51, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lAbbrechen").build(), ()->{
             InventoryMenuManager.getInstance().closeMenu(player);
         }));
-            return content;
+        return content;
     }
 
     @Override
