@@ -1,7 +1,7 @@
 name: MultiXP
 version: '${project.version}'
 main: me.multixp.Main
-api-version: 1.19
+api-version: '1.20'
 commands:
   MultiXP:
     description: Testi mensti

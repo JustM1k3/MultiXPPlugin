@@ -184,7 +184,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
     private void saveMenus(Player p) {
         MenuView a = InventoryMenuManager.getInstance().getOpenMenu(p);
         @SuppressWarnings("unchecked")
-        LinkedList<TrippleWrapper<CustomMenu, InventoryContent, Task>> tempOpenMenus = (LinkedList<TrippleWrapper<CustomMenu, InventoryContent, Task>>) ReflectionUtils.accessField(MenuView.class, a, "openMenus", LinkedList.class);
+        LinkedList<TrippleWrapper<CustomMenu, InventoryContent, Task>> tempOpenMenus = (LinkedList<TrippleWrapper<CustomMenu, InventoryContent, Task>>) ReflectionUtils.accessField(MenuView.class, a, "openMenus");
         List<CustomMenu> t = tempOpenMenus.stream().map(TrippleWrapper::getValue1).toList();
         PacketReader.openMenus.put(p.getUniqueId(), t);
     }
