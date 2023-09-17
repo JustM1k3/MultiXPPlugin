@@ -89,7 +89,7 @@ public class MultiXPCreateFlasche2 extends CustomMenu implements Closeable, Slot
                     setResultBottle(wert, ExpManager.getLevelFromExp(wert), anzahl);
                 }
             } else {
-                content.addGuiItem(51, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lFehler").setMultiLineLore("Du hast nicht genügend Level/Erfahrungspunkte um die MultiXP Flasche zu erstellen!", "/n", "§c", false).build(), ()->{
+                content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lFehler").setMultiLineLore("Du hast nicht genügend Level/Erfahrungspunkte um die MultiXP Flasche zu erstellen!", "/n", "§c", false).build(), ()->{
                     player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
                 }));
             }
@@ -104,7 +104,7 @@ public class MultiXPCreateFlasche2 extends CustomMenu implements Closeable, Slot
         if(!(checkValidAnvilInputLevelAnzahl(player) && checkValidAnvilInputFlaschenAnzahl(player))){
             material = Material.RED_STAINED_GLASS_PANE;
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
-            content.addGuiItem(51, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lUngültige Eingabe").setMultiLineLore("Die eingegebene Levelanzahl/Flaschenanzahl ist ungültig!", "/n", "§c", false).build(), ()->{
+            content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lUngültige Eingabe").setMultiLineLore("Die eingegebene Levelanzahl/Flaschenanzahl ist ungültig!", "/n", "§c", false).build(), ()->{
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
             }));
         }
@@ -119,7 +119,6 @@ public class MultiXPCreateFlasche2 extends CustomMenu implements Closeable, Slot
                 input = input.replaceFirst(" ", "");
             }
             if ((!input.matches("[0-9]+")) || input.matches("0+")) {
-                //p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
                 return false;
             }
         }
@@ -134,7 +133,6 @@ public class MultiXPCreateFlasche2 extends CustomMenu implements Closeable, Slot
                 input = input.replaceFirst(" ", "");
             }
             if ((!input.matches("[0-9]+")) || input.matches("0+")) {
-                //p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
                 return false;
             }
         }
