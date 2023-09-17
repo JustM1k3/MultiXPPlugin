@@ -48,6 +48,10 @@ public class ExpManager {
     }
 
     public static boolean checkErfahrungFlaschenInput(int flaschenAnzahl, int erfahrungswert, Player player){
+        if (erfahrungswert > 2147483647 || erfahrungswert < 0){
+            return false;
+        }
+
         int playerXP = getPlayerEXP(player);
         return (flaschenAnzahl * erfahrungswert) <= playerXP;
     }
