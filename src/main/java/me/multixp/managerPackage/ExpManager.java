@@ -1,6 +1,7 @@
 package me.multixp.managerPackage;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -87,6 +88,25 @@ public class ExpManager {
         }
 
         return striche;
+    }
+
+    public static ItemStack createBottle(int xpValue, int lvlValue){
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add("§8<>---------------------------<>");
+        lore.add("§7Level: §a" + lvlValue);
+        lore.add(ExpManager.createExperienceBar(xpValue, lvlValue));
+        lore.add(" ");
+        lore.add("§7Erfahrungspunkte: §a" + xpValue);
+
+        return new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setLore(lore).setEnchant(Enchantment.MULTISHOT,1871,true,true).build();
+    }
+
+    public static void removeExpFromPlayer(Player player, int xpValue){
+        int xp = (int) ((int) getExpFromLevel(player.getLevel()) + getplayerExpToNextLevel(player));
+
+        player.setExp(0);
+        player.setLevel(0);
+        player.giveExp(xp - xpValue);
     }
 
     public ExpManager(){
