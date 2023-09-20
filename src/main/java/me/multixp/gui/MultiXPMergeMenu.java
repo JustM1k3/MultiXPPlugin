@@ -45,9 +45,9 @@ public class MultiXPMergeMenu extends CustomMenu implements Closeable, SlotCondi
             InventoryMenuManager.getInstance().closeMenu(player);
         }));
 
-        content.addGuiItem(29, new InventoryItem(new ItemStack(Material.AIR), (Runnable) null));
-        content.addGuiItem(30, new InventoryItem(new ItemStack(Material.AIR), (Runnable) null));
-        content.addGuiItem(31, new InventoryItem(new ItemStack(Material.AIR), (Runnable) null));
+        content.addGuiItem(29, new InventoryItem(new ItemStack(Material.AIR), (e)-> false));
+        content.addGuiItem(30, new InventoryItem(new ItemStack(Material.AIR), (e)-> false));
+        content.addGuiItem(31, new InventoryItem(new ItemStack(Material.AIR), (e)-> false));
         content.addGuiItem(32, new InventoryItem(new SkullManager("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhMWIxNTJkNTQxYTFkODkzODgyOWM1NjM2NGQxNzhlZDIyYmYifX19"," ").build(), ()->{}));
         content.addGuiItem(33, new InventoryItem(new ItemManager(Material.LIGHT_GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
 
