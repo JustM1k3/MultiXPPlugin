@@ -101,12 +101,12 @@ public class ExpManager {
     }
 
     public static ItemStack createBottle(int xpValue, int lvlValue){
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add("§8<>---------------------------<>");
-        lore.add("§7Level: §a" + lvlValue);
+        ArrayList<Component> lore = new ArrayList<>();
+        lore.add(MiniMessage.miniMessage().deserialize("<!italic><dark_gray><>---------------------------<>"));
+        lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Level: <green>" + lvlValue));
         lore.add(ExpManager.createExperienceBar(xpValue, lvlValue));
-        lore.add(" ");
-        lore.add("§7Erfahrungspunkte: §a" + xpValue);
+        lore.add(MiniMessage.miniMessage().deserialize(" "));
+        lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Erfahrungspunkte: <green>" + xpValue));
 
         return new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setLoreComponent(lore).setEnchant(Enchantment.MULTISHOT,1871,true,true).build();
     }
