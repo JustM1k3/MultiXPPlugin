@@ -75,7 +75,7 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
                 Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flaschen erflogreich zusammengefügt!");
             } else if (click.isLeftClick()) {
-                int i = 0;
+                InventoryMenuManager.getInstance().openMenu(player, new MultiXPMergeMenu());
             }
         }));
         content.addGuiItem(33, new InventoryItem(new ItemManager(Material.GLASS_BOTTLE).setDisplayName("§fZero").setMultiLineLore("Fügt den Erfahrungswert deiner MultiXP Flaschen und Erfahrungsflaschen deinem Levelstand hinzu.",4,"§7", false).build(), ()->{
