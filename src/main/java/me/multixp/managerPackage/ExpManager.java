@@ -48,6 +48,13 @@ public class ExpManager {
         return (xp_next - xp_act) * percentToNextLvL;
     }
 
+    public static double getExpToNextLevel(int level, double expPercent){
+        double xp_act = getExpFromLevel(level);
+        double xp_next = getExpFromLevel(level + 1);
+
+        return (xp_next - xp_act) * expPercent;
+    }
+
     public static boolean checkErfahrungFlaschenInput(int flaschenAnzahl, int erfahrungswert, Player player){
         if (erfahrungswert > 2147483647 || erfahrungswert < 0){
             return false;
