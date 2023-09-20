@@ -85,10 +85,13 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
             int wert = Integer.parseInt(PacketReader.getLevelAnzahlInput().get(player.getUniqueId()));
 
             if (checkAllValuesValidForBottleCreate(player, anzahl, wert)) {
-                if (switchAngabeVar != 1) {
-                    setResultBottle((int)ExpManager.getExpFromLevel(wert), wert, anzahl, player);
-                } else {
-                    setResultBottle(wert, ExpManager.getLevelFromExp(wert), anzahl, player);
+                switch (switchAngabeVar) {
+                    case 0 -> setResultBottle((int) ExpManager.getExpFromLevel(wert), wert, anzahl, player);
+                    case 1 -> setResultBottle(wert, ExpManager.getLevelFromExp(wert), anzahl, player);
+                    case 2 -> {
+                        int valueExp = (int) (ExpManager.getPlayerEXP(player) - (ExpManager.getExpFromLevel(player.getLevel() - wert) + ExpManager.getExpToNextLevel(player.getLevel() - wert, player.getExp())));
+                        setResultBottle(valueExp, ExpManager.getLevelFromExp(valueExp), anzahl, player);
+                    }
                 }
             } else {
                 content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lFehler").setMultiLineLore("Du hast nicht genügend /n Level/Erfahrungspunkte um die MultiXP /n Flasche zu erstellen!", "/n", "§c", false).build(), ()->{}));
@@ -253,40 +256,44 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
         PacketReader.openMenus.put(p.getUniqueId(), t);
     }
 
-    private boolean checkAllValuesValidForBottleCreate(Player player, int anzahl, int value){
-        if (!checkValidAnvilInputFlaschenAnzahl(player) && switchAngabeVar == 2){
+    private boolean checkAllValuesValidForBottleCreate(Player player, int anzahl, int value) {
+        if (!checkValidAnvilInputFlaschenAnzahl(player) && switchAngabeVar == 2) {
             return false;
         }
-        if (! checkValidAnvilInputLevelAnzahl(player)){
+        if (!checkValidAnvilInputLevelAnzahl(player)) {
             return false;
         }
-        if (switchAngabeVar == 0){
-            if (value > 24791){
-                return false;
-            }
+        switch (switchAngabeVar) {
+            case 0 -> {
+                if (value > 24791) {
+                    return false;
+                }
 
-            double valueExp = ExpManager.getExpFromLevel(value);
+                double valueExp = ExpManager.getExpFromLevel(value);
 
-            if (!ExpManager.checkErfahrungFlaschenInput(anzahl, (int) valueExp, player)){
-                return false;
+                if (!ExpManager.checkErfahrungFlaschenInput(anzahl, (int) valueExp, player)) {
+                    return false;
+                }
             }
-        } else if (switchAngabeVar == 1) {
-            if (!ExpManager.checkErfahrungFlaschenInput(anzahl, value, player)){
-                return false;
+            case 1 -> {
+                if (!ExpManager.checkErfahrungFlaschenInput(anzahl, value, player)) {
+                    return false;
+                }
             }
-        } else {
-            if (value > 24791){
-                return false;
-            }
-            int playerLvl = player.getLevel();
+            case 2 -> {
+                if (value > 24791) {
+                    return false;
+                }
+                int playerLvl = player.getLevel();
 
-            if (playerLvl - value < 0){
-                return false;
-            }
+                if (playerLvl - value < 0) {
+                    return false;
+                }
 
-            double valueExp = ExpManager.getExpFromLevel(playerLvl) - ExpManager.getExpFromLevel(playerLvl - value);
-            if (!ExpManager.checkErfahrungFlaschenInput(anzahl, (int) valueExp, player)){
-                return false;
+                double valueExp = ExpManager.getPlayerEXP(player) - (ExpManager.getExpFromLevel(playerLvl - value) + ExpManager.getExpToNextLevel(playerLvl - value, player.getExp()));
+                if (!ExpManager.checkErfahrungFlaschenInput(anzahl, (int) valueExp, player)) {
+                    return false;
+                }
             }
         }
         return true;
@@ -299,8 +306,11 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
         lore.add(ExpManager.createExperienceBar(xpWert, lvl));
         lore.add(" ");
         lore.add("§7Erfahrungspunkte: §a" + xpWert);
-        lore.add(" ");
         lore.add("§7Flaschenanzahl: §a" + anzahl);
+        lore.add(" ");
+        if (anzahl >= 2) {
+            lore.add("§7Erfahrungspunkte insgesamt: §a" + anzahl * xpWert);
+        }
 
         content.addGuiItem(33, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setLore(lore).build(), ()->{
             ArrayList<ItemStack> flaschen = new ArrayList<>();

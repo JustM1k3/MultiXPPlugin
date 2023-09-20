@@ -75,16 +75,16 @@ public class ExpManager {
         double xpWertRest = xpWert - lvlInXp;
         double lvlDiffernece = lvlInXpNext - lvlInXp;
 
-        int erfahrungsStriche = (int) ((xpWertRest / lvlDiffernece) * 25);
+        int erfahrungsStriche = (int) ((xpWertRest / lvlDiffernece) * 35);
 
         String striche = "";
 
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 35; i++) {
             if (i < erfahrungsStriche){
-                striche += "§a| ";
+                striche += "§a|";
                 continue;
             }
-            striche += "§7| ";
+            striche += "§7|";
         }
 
         return striche;
@@ -102,11 +102,11 @@ public class ExpManager {
     }
 
     public static void removeExpFromPlayer(Player player, int xpValue){
-        int xp = (int) ((int) getExpFromLevel(player.getLevel()) + getplayerExpToNextLevel(player));
+        double playerXp = ExpManager.getPlayerEXP(player);
 
         player.setExp(0);
         player.setLevel(0);
-        player.giveExp(xp - xpValue);
+        player.giveExp((int) (playerXp - xpValue));
     }
 
     public ExpManager(){
