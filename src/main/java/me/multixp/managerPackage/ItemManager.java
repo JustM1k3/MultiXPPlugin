@@ -1,5 +1,6 @@
 package me.multixp.managerPackage;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -45,6 +46,11 @@ public class ItemManager {
 
     public ItemManager setLore(String... lore){
         itemMeta.setLore(Arrays.asList(lore));
+        return this;
+    }
+
+    public ItemManager setLoreComponent(ArrayList<Component> lore){
+        itemMeta.lore(lore);
         return this;
     }
 

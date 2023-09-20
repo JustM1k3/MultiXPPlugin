@@ -16,6 +16,8 @@ import me.oxolotel.utils.general.TrippleWrapper;
 import me.oxolotel.utils.wrapped.Chat;
 import me.oxolotel.utils.wrapped.command.sender.CommandSender;
 import me.oxolotel.utils.wrapped.schedule.Task;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -300,19 +302,19 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
     }
 
     private void setResultBottle(int xpWert, int lvl, int anzahl, Player player){
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add("§8<>---------------------------<>");
-        lore.add("§7Level: §a" + lvl);
+        ArrayList<Component> lore = new ArrayList<>();
+        lore.add(MiniMessage.miniMessage().deserialize("<!italic><dark_gray><>---------------------------<>"));
+        lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Level: <green>" + lvl));
         lore.add(ExpManager.createExperienceBar(xpWert, lvl));
-        lore.add(" ");
-        lore.add("§7Erfahrungspunkte: §a" + xpWert);
-        lore.add("§7Flaschenanzahl: §a" + anzahl);
-        lore.add(" ");
+        lore.add(MiniMessage.miniMessage().deserialize(" "));
+        lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Erfahrungspunkte: <green>" + xpWert));
+        lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Flaschenanzahl: <green>" + anzahl));
+        lore.add(MiniMessage.miniMessage().deserialize(" "));
         if (anzahl >= 2) {
-            lore.add("§7Erfahrungspunkte insgesamt: §a" + anzahl * xpWert);
+            lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Erfahrungspunkte insgesamt: <green>" + anzahl * xpWert));
         }
 
-        content.addGuiItem(33, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setLore(lore).build(), ()->{
+        content.addGuiItem(33, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setLoreComponent(lore).build(), ()->{
             ArrayList<ItemStack> flaschen = new ArrayList<>();
             for (int i = 0; i < anzahl; i++) {
                 flaschen.add(ExpManager.createBottle(xpWert, lvl));

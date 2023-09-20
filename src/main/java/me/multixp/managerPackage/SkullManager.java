@@ -2,6 +2,7 @@ package me.multixp.managerPackage;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -49,6 +50,11 @@ public class SkullManager {
 
     public SkullManager setLore(ArrayList<String> lore){
         skullMeta.setLore(lore);
+        return this;
+    }
+
+    public SkullManager setLoreComponent(ArrayList<Component> lore){
+        skullMeta.lore(lore);
         return this;
     }
 

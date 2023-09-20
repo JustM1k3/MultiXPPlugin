@@ -1,5 +1,7 @@
 package me.multixp.managerPackage;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -65,36 +67,37 @@ public class ExpManager {
     }
 
     public static ItemStack createMultiXPBottle(int xpWert, int lvl){
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add("§8<>---------------------------<>");
-        lore.add("§7Level: §a" + lvl);
+        ArrayList<Component> lore = new ArrayList<>();
+        lore.add(MiniMessage.miniMessage().deserialize("<dark_gray><>---------------------------<>"));
+        lore.add(MiniMessage.miniMessage().deserialize("<gray>Level: <green>" + lvl));
         lore.add(createExperienceBar(xpWert, lvl));
-        lore.add(" ");
-        lore.add("§7Erfahrungspunkte: §a" + xpWert);
+        lore.add(MiniMessage.miniMessage().deserialize(" "));
+        lore.add(MiniMessage.miniMessage().deserialize("<gray>Erfahrungspunkte: <green>" + xpWert));
 
-        return new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setLore(lore).build();
+        return new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setLoreComponent(lore).build();
     }
 
-    public static String createExperienceBar(int xpWert, int lvl){
+    public static Component createExperienceBar(int xpWert, int lvl){
         double lvlInXp = getExpFromLevel(lvl);
         double lvlInXpNext = getExpFromLevel(lvl+1);
 
         double xpWertRest = xpWert - lvlInXp;
         double lvlDiffernece = lvlInXpNext - lvlInXp;
 
-        int erfahrungsStriche = (int) ((xpWertRest / lvlDiffernece) * 35);
+        int erfahrungsStriche = (int)Math.floor((xpWertRest / lvlDiffernece) * 35) + 1;
 
-        String striche = "";
+        StringBuilder stricheFarbe = new StringBuilder();
+        StringBuilder striche = new StringBuilder();
 
         for (int i = 0; i < 35; i++) {
             if (i < erfahrungsStriche){
-                striche += "§a|";
+                stricheFarbe.append("|");
                 continue;
             }
-            striche += "§7|";
+            striche.append("|");
         }
 
-        return striche;
+        return MiniMessage.miniMessage().deserialize("<!italic><gradient:green:#C3FFC3>"+stricheFarbe+"</gradient><white>"+striche);
     }
 
     public static ItemStack createBottle(int xpValue, int lvlValue){
@@ -105,7 +108,7 @@ public class ExpManager {
         lore.add(" ");
         lore.add("§7Erfahrungspunkte: §a" + xpValue);
 
-        return new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setLore(lore).setEnchant(Enchantment.MULTISHOT,1871,true,true).build();
+        return new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setLoreComponent(lore).setEnchant(Enchantment.MULTISHOT,1871,true,true).build();
     }
 
     public static void removeExpFromPlayer(Player player, int xpValue){
