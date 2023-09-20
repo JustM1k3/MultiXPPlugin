@@ -62,7 +62,7 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
                     }
                 }
                 if (itemList.isEmpty()){
-                    return;
+                    return true;
                 }
 
                 if (ExpManager.checkPlayerInvPlace(player, 1)) {
@@ -77,6 +77,7 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
             } else if (click.isLeftClick()) {
                 InventoryMenuManager.getInstance().openMenu(player, new MultiXPMergeMenu());
             }
+            return true;
         }));
         content.addGuiItem(33, new InventoryItem(new ItemManager(Material.GLASS_BOTTLE).setDisplayName("§fZero").setMultiLineLore("Fügt den Erfahrungswert deiner MultiXP Flaschen und Erfahrungsflaschen deinem Levelstand hinzu.",4,"§7", false).build(), ()->{
             if (player.getName().equals("SchokoMike") || player.getName().equals("MC_Master_DE") ){
