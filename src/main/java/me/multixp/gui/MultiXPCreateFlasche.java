@@ -311,15 +311,15 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
 
     private void setResultBottle(int xpWert, int lvl, int anzahl, Player player){
         ArrayList<Component> lore = new ArrayList<>();
-        lore.add(MiniMessage.miniMessage().deserialize("<dark_gray><>---------------------------<>"));
-        lore.add(MiniMessage.miniMessage().deserialize("<gray>Level: <green>" + lvl));
+        lore.add(MiniMessage.miniMessage().deserialize("<!italic><dark_gray><>---------------------------<>"));
+        lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Level: <green>" + lvl));
         lore.add(ExpManager.createExperienceBar(xpWert, lvl));
         lore.add(MiniMessage.miniMessage().deserialize(" "));
-        lore.add(MiniMessage.miniMessage().deserialize("<gray>Erfahrungspunkte: <green>" + xpWert));
-        lore.add(MiniMessage.miniMessage().deserialize("<gray>Flaschenanzahl: <green>" + anzahl));
+        lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Erfahrungspunkte: <green>" + xpWert));
+        lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Flaschenanzahl: <green>" + anzahl));
         lore.add(MiniMessage.miniMessage().deserialize(" "));
         if (anzahl >= 2) {
-            lore.add(MiniMessage.miniMessage().deserialize("<gray>Erfahrungspunkte insgesamt: <green>" + anzahl * xpWert));
+            lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Erfahrungspunkte insgesamt: <green>" + anzahl * xpWert));
         }
 
         content.addGuiItem(33, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setLoreComponent(lore).build(), ()->{
