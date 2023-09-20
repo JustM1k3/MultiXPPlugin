@@ -2,7 +2,6 @@ package me.multixp.managerPackage;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
