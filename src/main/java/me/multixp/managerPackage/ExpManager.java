@@ -6,9 +6,12 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class ExpManager {
 
@@ -84,7 +87,7 @@ public class ExpManager {
         double xpWertRest = xpWert - lvlInXp;
         double lvlDiffernece = lvlInXpNext - lvlInXp;
 
-        int erfahrungsStriche = (int)Math.floor((xpWertRest / lvlDiffernece) * 35) + 1;
+        int erfahrungsStriche = (int)Math.floor((xpWertRest / lvlDiffernece) * 35);
 
         StringBuilder stricheFarbe = new StringBuilder();
         StringBuilder striche = new StringBuilder();
@@ -98,6 +101,12 @@ public class ExpManager {
         }
 
         return MiniMessage.miniMessage().deserialize("<!italic><gradient:green:#C3FFC3>"+stricheFarbe+"</gradient><white>"+striche);
+    }
+
+
+    public static boolean checkPlayerInvPlace(Player player, int flaschenanzahl){
+        int emptySlotsSize = (int) Arrays.stream(player.getInventory().getStorageContents()).filter(item -> item == null || item.getType() == Material.AIR).count();
+        return (emptySlotsSize >= Math.ceil(((double) flaschenanzahl / 64)));
     }
 
     public static ItemStack createBottle(int xpValue, int lvlValue){
@@ -117,6 +126,32 @@ public class ExpManager {
         player.setExp(0);
         player.setLevel(0);
         player.giveExp((int) (playerXp - xpValue));
+    }
+
+    public static boolean checkForMultiXPFlasche(ItemStack item){
+        ItemMeta meta = item.getItemMeta();
+
+        if (meta != null && meta.hasEnchant(Enchantment.MULTISHOT)) {
+            int lvl = meta.getEnchants().get(Enchantment.MULTISHOT);
+
+            return lvl == 1871;
+        }
+        return false;
+    }
+
+    public static ItemStack mergeMultiXPFlaschen(ArrayList<ItemStack> flaschen){
+        int xpSum = 0;
+
+        //xpSum = flaschen.stream().map(item -> Objects.requireNonNull(item.getLore()).get(4)).mapToInt(s -> Integer.parseInt(s.split(" ")[1].substring(2)) * flasche.getAmount()).sum();
+
+        for (ItemStack flasche: flaschen) {
+            String xpLore = flasche.getItemMeta().getLore().get(4);
+            String[] arr = xpLore.split(" ");
+
+            xpSum += Integer.parseInt(arr[1].substring(2)) * flasche.getAmount();
+        }
+
+        return createBottle(xpSum, getLevelFromExp(xpSum));
     }
 
     public ExpManager(){

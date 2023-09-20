@@ -198,50 +198,58 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
         }
     }
 
-    private void createAnvilItem(Player player){
+    private void createAnvilItem(Player player) {
         String value = "0";
 
-        if (PacketReader.getLevelAnzahlInput().containsKey(player.getUniqueId()) && checkValidAnvilInputLevelAnzahl(player)){
+        if (PacketReader.getLevelAnzahlInput().containsKey(player.getUniqueId()) && checkValidAnvilInputLevelAnzahl(player)) {
             value = PacketReader.getLevelAnzahlInput().get(player.getUniqueId());
         } else if (PacketReader.getLevelAnzahlInput().containsKey(player.getUniqueId()) && !checkValidAnvilInputLevelAnzahl(player)) {
             value = "§c" + PacketReader.getLevelAnzahlInput().get(player.getUniqueId());
         }
 
-        if (switchAngabeVar != 1){
-            content.addGuiItem(30, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Levelanzahl: §a" + value).setMultiLineLore("Geb die Anzahl der Level an, die du /n in deiner MultiXP Flasche speichern /n möchtest.","/n","§7", false).build(), ()->{
-                saveMenus(player);
-                InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
-                AnvilMenuManager.levelFix(player);
-                AnvilMenuManager.createAnvilMenu(player, new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName(" ").setMultiLineLore("Geb die Anzahl der Level an, die du /n in deiner MultiXP Flasche speichern /n möchtest.", "/n", "§7", false).build(), "Levelanzahl");
-            }));
+        switch (switchAngabeVar) {
+            case 0 -> {
+                content.addGuiItem(30, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Levelanzahl: §a" + value).setMultiLineLore("Gib die Anzahl der Level an, die du /n in deiner MultiXP Flasche speichern /n möchtest.", "/n", "§7", false).build(), () -> {
+                    saveMenus(player);
+                    InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
+                    AnvilMenuManager.levelFix(player);
+                    AnvilMenuManager.createAnvilMenu(player, new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName(" ").setMultiLineLore("Gib die Anzahl der Level an, die du /n in deiner MultiXP Flasche speichern /n möchtest.", "/n", "§7", false).build(), "Levelanzahl");
+                }));
+            }
+            case 1 -> {
+                content.addGuiItem(30, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Erfahrungswert: §a" + value).setMultiLineLore("Gib den Erfahrungswert an, den du /n in deiner MultiXP Flasche speichern /n möchtest.", "/n", "§7", false).build(), () -> {
+                    saveMenus(player);
+                    InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
+                    AnvilMenuManager.levelFix(player);
+                    AnvilMenuManager.createAnvilMenu(player, new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName(" ").setMultiLineLore("Gib den Erfahrungswert an, den du /n in deiner MultiXP Flasche speichern /n möchtest.", "/n", "§7", false).build(), "Erfahrungswert");
+                }));
+            }
+            case 2 -> {
+                content.addGuiItem(30, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Levelanzahl: §a" + value).setMultiLineLore("Gib die Anzahl der Level an, die du /n von deiner Levelleiste abziehen /n möchtest.", "/n", "§7", false).build(), () -> {
+                    saveMenus(player);
+                    InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
+                    AnvilMenuManager.levelFix(player);
+                    AnvilMenuManager.createAnvilMenu(player, new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName(" ").setMultiLineLore("Gib die Anzahl der Level an, die du /n von deiner Levelleiste abziehen /n möchtest.", "/n", "§7", false).build(), "Levelanzahl");
+                }));
+            }
 
-
-        } else {
-            content.addGuiItem(30, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Erfahrungswert: §a" + value).setMultiLineLore("Geb den Erfahrungswert an, den du /n in deiner MultiXP Flasche speichern /n möchtest.","/n","§7", false).build(), ()->{
-                saveMenus(player);
-                InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
-                AnvilMenuManager.levelFix(player);
-                AnvilMenuManager.createAnvilMenu(player, new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName(" ").setMultiLineLore("Geb den Erfahrungswert an, den du /n in deiner MultiXP Flasche speichern /n möchtest.", "/n", "§7", false).build(), "Erfahrungswert");
-            }));
         }
-
-        if (switchAngabeVar != 2){
+        if (switchAngabeVar != 2) {
             value = "1";
 
-            if (PacketReader.getFlaschenAnzahlInput().containsKey(player.getUniqueId()) && checkValidAnvilInputFlaschenAnzahl(player)){
+            if (PacketReader.getFlaschenAnzahlInput().containsKey(player.getUniqueId()) && checkValidAnvilInputFlaschenAnzahl(player)) {
                 value = PacketReader.getFlaschenAnzahlInput().get(player.getUniqueId());
             } else if (PacketReader.getFlaschenAnzahlInput().containsKey(player.getUniqueId()) && !checkValidAnvilInputFlaschenAnzahl(player)) {
                 value = "§c" + PacketReader.getFlaschenAnzahlInput().get(player.getUniqueId());
             }
 
-            content.addGuiItem(31, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Flaschenanzahl: §a" + value).setMultiLineLore("Geb die Anzahl an MultiXP Flaschen /n an, die du erstellen möchtest.","/n","§7",false).build(), ()->{
+            content.addGuiItem(31, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Flaschenanzahl: §a" + value).setMultiLineLore("Gib die Anzahl an MultiXP Flaschen /n an, die du erstellen möchtest.", "/n", "§7", false).build(), () -> {
                 saveMenus(player);
                 InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
                 AnvilMenuManager.levelFix(player);
                 AnvilMenuManager.createAnvilMenu(player, new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName(" ").setMultiLineLore("Geb die Anzahl an MultiXP Flaschen /n an, die du erstellen möchtest.", "/n", "§7", false).build(), "Flaschenanzahl");
             }));
         }
-
     }
 
     @Override
@@ -303,15 +311,15 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
 
     private void setResultBottle(int xpWert, int lvl, int anzahl, Player player){
         ArrayList<Component> lore = new ArrayList<>();
-        lore.add(MiniMessage.miniMessage().deserialize("<!italic><dark_gray><>---------------------------<>"));
-        lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Level: <green>" + lvl));
+        lore.add(MiniMessage.miniMessage().deserialize("<dark_gray><>---------------------------<>"));
+        lore.add(MiniMessage.miniMessage().deserialize("<gray>Level: <green>" + lvl));
         lore.add(ExpManager.createExperienceBar(xpWert, lvl));
         lore.add(MiniMessage.miniMessage().deserialize(" "));
-        lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Erfahrungspunkte: <green>" + xpWert));
-        lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Flaschenanzahl: <green>" + anzahl));
+        lore.add(MiniMessage.miniMessage().deserialize("<gray>Erfahrungspunkte: <green>" + xpWert));
+        lore.add(MiniMessage.miniMessage().deserialize("<gray>Flaschenanzahl: <green>" + anzahl));
         lore.add(MiniMessage.miniMessage().deserialize(" "));
         if (anzahl >= 2) {
-            lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Erfahrungspunkte insgesamt: <green>" + anzahl * xpWert));
+            lore.add(MiniMessage.miniMessage().deserialize("<gray>Erfahrungspunkte insgesamt: <green>" + anzahl * xpWert));
         }
 
         content.addGuiItem(33, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setLoreComponent(lore).build(), ()->{
