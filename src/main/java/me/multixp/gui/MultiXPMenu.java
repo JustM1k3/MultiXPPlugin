@@ -81,7 +81,6 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
                 EconomyManager.getInstance().addMoney(me.oxolotel.utils.wrapped.player.Player.of(player), 10000);
             }
             player.sendMessage("Glass Flasche");
-            player.getInventory().setItem(0, ExpManager.createMultiXPBottle(145, 9));
             //TODO Zero Command Funktion
         }));
         content.addGuiItem(49, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lAbbrechen").build(), ()->{

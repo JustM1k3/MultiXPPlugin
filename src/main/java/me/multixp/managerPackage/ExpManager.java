@@ -69,17 +69,6 @@ public class ExpManager {
         return (flaschenAnzahl * erfahrungswert) <= playerXP;
     }
 
-    public static ItemStack createMultiXPBottle(int xpWert, int lvl){
-        ArrayList<Component> lore = new ArrayList<>();
-        lore.add(MiniMessage.miniMessage().deserialize("<dark_gray><>---------------------------<>"));
-        lore.add(MiniMessage.miniMessage().deserialize("<gray>Level: <green>" + lvl));
-        lore.add(createExperienceBar(xpWert, lvl));
-        lore.add(MiniMessage.miniMessage().deserialize(" "));
-        lore.add(MiniMessage.miniMessage().deserialize("<gray>Erfahrungspunkte: <green>" + xpWert));
-
-        return new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setLoreComponent(lore).build();
-    }
-
     public static Component createExperienceBar(int xpWert, int lvl){
         double lvlInXp = getExpFromLevel(lvl);
         double lvlInXpNext = getExpFromLevel(lvl+1);
