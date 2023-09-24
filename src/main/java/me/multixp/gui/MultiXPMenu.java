@@ -51,34 +51,30 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
             InventoryMenuManager.getInstance().closeMenu(player);
             InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreate(54));
         }));
-        content.addGuiItem(31, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§5Merge").setMultiLineLore("§8[Rechtsklick: Alle Flaschen mergen] /n §8[Linksklick: Menu öffnen] /n Kombiniert deine MultiXP Flaschen zu einer MultiXP Flasche.","/n", "§7", false).build(), (click)->{
-            if (click.isRightClick()){
-                ArrayList<ItemStack> itemList = new ArrayList<>();
+        content.addGuiItem(31, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§5Merge").setMultiLineLore("Kombiniert alle MultiXP Flaschen in /n deinem Inventar zu einer MultiXP Flasche.","/n", "§7", false).build(), ()-> {
+            ArrayList<ItemStack> itemList = new ArrayList<>();
 
-                for (ItemStack item: player.getInventory().getContents()) {
-                    if (item != null && ExpManager.checkForMultiXPFlasche(item)){
-                        itemList.add(item);
-                        player.getInventory().remove(item);
-                    }
+            for (ItemStack item : player.getInventory().getContents()) {
+                if (item != null && ExpManager.checkForMultiXPFlasche(item)) {
+                    itemList.add(item);
+                    player.getInventory().remove(item);
                 }
-                if (itemList.isEmpty()){
-                    return true;
-                }
-
-                if (ExpManager.checkPlayerInvPlace(player, 1)) {
-                    player.getInventory().addItem(ExpManager.mergeMultiXPFlaschen(itemList));
-                    InventoryMenuManager.getInstance().closeMenu(player);
-                } else {
-                    InventoryMenuManager.getInstance().closeMenu(player);
-                    InventoryMenuManager.getInstance().openMenu(player, new ConfirmBottleDropMenu(new ArrayList<ItemStack>((Collection) ExpManager.mergeMultiXPFlaschen(itemList)), 0));
-                }
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
-                Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flaschen erfolgreich zusammengefügt!");
-            } else if (click.isLeftClick()) {
-                InventoryMenuManager.getInstance().openMenu(player, new MultiXPMergeMenu());
             }
-            return true;
+            if (itemList.isEmpty()) {
+                return;
+            }
+
+            if (ExpManager.checkPlayerInvPlace(player, 1)) {
+                player.getInventory().addItem(ExpManager.mergeMultiXPFlaschen(itemList));
+                InventoryMenuManager.getInstance().closeMenu(player);
+            } else {
+                InventoryMenuManager.getInstance().closeMenu(player);
+                InventoryMenuManager.getInstance().openMenu(player, new ConfirmBottleDropMenu(new ArrayList<ItemStack>((Collection) ExpManager.mergeMultiXPFlaschen(itemList)), 0));
+            }
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
+            Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flaschen erfolgreich zusammengefügt!");
         }));
+
         content.addGuiItem(33, new InventoryItem(new ItemManager(Material.GLASS_BOTTLE).setDisplayName("§fZero").setMultiLineLore("Fügt den Erfahrungswert deiner MultiXP Flaschen und Erfahrungsflaschen deinem Levelstand hinzu.",4,"§7", false).build(), ()->{
             if (player.getName().equals("SchokoMike") || player.getName().equals("MC_Master_DE") ){
                 EconomyManager.getInstance().addMoney(me.oxolotel.utils.wrapped.player.Player.of(player), 10000);

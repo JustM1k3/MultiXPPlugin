@@ -129,6 +129,10 @@ public class ExpManager {
     }
 
     public static boolean checkForMultiXPFlasche(ItemStack item){
+        if (item == null){
+            return false;
+        }
+
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null && meta.hasEnchant(Enchantment.MULTISHOT)) {
