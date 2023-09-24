@@ -1,5 +1,6 @@
 package me.multixp.gui;
 
+import me.multixp.managerPackage.ExpManager;
 import me.multixp.managerPackage.ItemManager;
 import me.multixp.managerPackage.SkullManager;
 import me.oxolotel.utils.bukkit.menuManager.InventoryMenuManager;
@@ -11,7 +12,12 @@ import me.oxolotel.utils.bukkit.menuManager.menus.content.InventoryContent;
 import me.oxolotel.utils.bukkit.menuManager.menus.content.InventoryItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class MultiXPMergeMenu extends CustomMenu implements Closeable, SlotCondition, Modifyable {
     public MultiXPMergeMenu() {
@@ -21,6 +27,18 @@ public class MultiXPMergeMenu extends CustomMenu implements Closeable, SlotCondi
 
     @Override
     public void onClose(Player player, ItemStack[] itemStacks, CloseReason closeReason) {
+        ArrayList<ItemStack> slots = new ArrayList<>();
+        slots.add(itemStacks[29]);
+        slots.add(itemStacks[30]);
+        slots.add(itemStacks[31]);
+
+        for (ItemStack item : slots) {
+            if (checkPlayerInvPlace(player, slots.size())) {
+                player.getInventory().addItem(item);
+            } else {
+                player.getWorld().dropItem(player.getLocation(), item);
+            }
+        }
 
     }
 
@@ -45,13 +63,30 @@ public class MultiXPMergeMenu extends CustomMenu implements Closeable, SlotCondi
             InventoryMenuManager.getInstance().closeMenu(player);
         }));
 
-        content.addGuiItem(29, new InventoryItem(new ItemStack(Material.AIR), (e)-> false));
-        content.addGuiItem(30, new InventoryItem(new ItemStack(Material.AIR), (e)-> false));
-        content.addGuiItem(31, new InventoryItem(new ItemStack(Material.AIR), (e)-> false));
+        content.addGuiItem(29, new InventoryItem(new ItemStack(Material.AIR), this::inventoryClick));
+        content.addGuiItem(30, new InventoryItem(new ItemStack(Material.AIR), this::inventoryClick));
+        content.addGuiItem(31, new InventoryItem(new ItemStack(Material.AIR), this::inventoryClick));
         content.addGuiItem(32, new InventoryItem(new SkullManager("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhMWIxNTJkNTQxYTFkODkzODgyOWM1NjM2NGQxNzhlZDIyYmYifX19"," ").build(), ()->{}));
         content.addGuiItem(33, new InventoryItem(new ItemManager(Material.LIGHT_GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
 
         return content;
+    }
+
+    private boolean inventoryClick(InventoryClickEvent e){
+        ArrayList<ItemStack> slots = new ArrayList<>();
+
+        ItemStack cursorItem = e.getWhoClicked().getItemOnCursor();
+
+        if (ExpManager.checkForMultiXPFlasche(cursorItem)){
+            slots.add(cursorItem);
+        }
+
+        return false;
+    }
+
+    private boolean checkPlayerInvPlace(Player player, int items){
+        int emptySlotsSize = (int) Arrays.stream(player.getInventory().getStorageContents()).filter(item -> item == null || item.getType() == Material.AIR).count();
+        return (emptySlotsSize >= items);
     }
 
     @Override
