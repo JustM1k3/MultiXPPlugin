@@ -2,7 +2,6 @@ package me.multixp;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import me.multixp.listener.MenuContentUpdateEvent;
 import me.multixp.listener.XpBottleEvent;
 import me.oxolotel.utils.wrapped.plugin.BukkitPlugin;
 import me.oxolotel.utils.wrapped.plugin.Plugin;
@@ -20,7 +19,6 @@ public final class Main extends BukkitPlugin {
         new Commands().register(Plugin.of(this));
         Bukkit.getPluginManager().registerEvents(new AnvilMenuManager(), this);
         Bukkit.getPluginManager().registerEvents(new XpBottleEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new MenuContentUpdateEvent(), this);
 
         ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
         PacketReader.readWindowClickPacket(protocolManager, this);

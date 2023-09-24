@@ -73,7 +73,7 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
                     InventoryMenuManager.getInstance().openMenu(player, new ConfirmBottleDropMenu(new ArrayList<ItemStack>((Collection) ExpManager.mergeMultiXPFlaschen(itemList)), 0));
                 }
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
-                Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flaschen erflogreich zusammengefügt!");
+                Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flaschen erfolgreich zusammengefügt!");
             } else if (click.isLeftClick()) {
                 InventoryMenuManager.getInstance().openMenu(player, new MultiXPMergeMenu());
             }
