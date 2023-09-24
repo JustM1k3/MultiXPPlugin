@@ -18,11 +18,11 @@ public class Commands implements PlayerCommand {
     @NotNull
     @Override
     public List<Command> getSubCommands() {
-        ArrayList<Command> commandRegistration = new ArrayList<>();
-        commandRegistration.add(new HelpCommand());
-        commandRegistration.add(new CreateCommand());
-        commandRegistration.add(new ZeroCommand());
-        return commandRegistration;
+        return List.of(
+                new HelpCommand(),
+                new CreateCommand(),
+                new ZeroCommand()
+        );
     }
 
     @Override
