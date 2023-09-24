@@ -60,8 +60,8 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
                     player.getInventory().remove(item);
                 }
             }
-            if (itemList.isEmpty()) {
-                Chat.sendErrorMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Du hast keine MultiXP Flaschen in deinem Inventar!");
+            if (itemList.size() < 2) {
+                Chat.sendErrorMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Es können keine MultiXP Flaschen in deinem Inventar zusammengefügt werden!");
                 return;
             }
 
