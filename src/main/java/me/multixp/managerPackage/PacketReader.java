@@ -5,6 +5,8 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.wrappers.Pair;
+import me.multixp.gui.CreateNormalXpBottle;
 import me.oxolotel.utils.bukkit.menuManager.InventoryMenuManager;
 import me.oxolotel.utils.bukkit.menuManager.menus.CustomMenu;
 import me.multixp.Main;
@@ -21,24 +23,25 @@ import java.util.List;
 import java.util.UUID;
 
 public class PacketReader {
+    private static final HashMap<UUID, String> normalFlascheAnzahlStacks = new HashMap<>();
+    private static final HashMap<UUID, String> normalFlascheAnzahl = new HashMap<>();
+
+    public static HashMap<UUID, String> getNormalFlascheAnzahl() {
+        return normalFlascheAnzahl;
+    }
+
+    public static HashMap<UUID, String> getNormalFlascheAnzahlStacks() {
+        return normalFlascheAnzahlStacks;
+    }
 
     private static final HashMap<UUID,String> levelAnzahlInput = new HashMap<>();
     public static HashMap<UUID, String> getLevelAnzahlInput() {
         return levelAnzahlInput;
     }
 
-    public static void removeLevelAnzahlInput(Player p){
-        levelAnzahlInput.remove(p.getUniqueId());
-    }
-
-
     private static final HashMap<UUID,String> flaschenAnzahlInput = new HashMap<>();
     public static HashMap<UUID, String> getFlaschenAnzahlInput() {
         return flaschenAnzahlInput;
-    }
-
-    public static void removeFlaschenAnzahlInput(Player p){
-        flaschenAnzahlInput.remove(p.getUniqueId());
     }
 
     public static HashMap<UUID, List<CustomMenu>> openMenus = new HashMap<>();
@@ -82,7 +85,11 @@ public class PacketReader {
                 input = input.replace(" ","");
                 if(p.getOpenInventory().getTitle().equalsIgnoreCase("Levelanzahl") || p.getOpenInventory().getTitle().equalsIgnoreCase("Erfahrungswert")){
                     levelAnzahlInput.put(p.getUniqueId(), input);
-                }else{
+                }else if (p.getOpenInventory().getTitle().equalsIgnoreCase("Stacks")) {
+                    normalFlascheAnzahlStacks.put(p.getUniqueId(), input);
+                } else if (p.getOpenInventory().getTitle().equalsIgnoreCase("Anzahl")) {
+                    normalFlascheAnzahl.put(p.getUniqueId(), input);
+                } else {
                     flaschenAnzahlInput.put(p.getUniqueId(), input);
                 }
 
@@ -104,7 +111,8 @@ public class PacketReader {
                     public void run() {
                         if (counter == 1){
                             for (CustomMenu cm : openMenus.get(p.getUniqueId())) {
-                                InventoryMenuManager.getInstance().openMenu(p, cm);}
+                                InventoryMenuManager.getInstance().openMenu(p, cm);
+                            }
                             cancel();
                         }
                         counter++;
