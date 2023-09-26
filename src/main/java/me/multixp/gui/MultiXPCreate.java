@@ -30,6 +30,8 @@ public class MultiXPCreate extends CustomMenu implements Closeable, SlotConditio
         content.fill(28,35, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
         content.fill(37,44, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
 
+        content.addGuiItem(13, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("Erfahrungsflasche :)").setMultiLineLore("Platzhalter", "/n", "§7", false).build(), ()->{}));
+
         content.addGuiItem(13, new InventoryItem(new ItemManager(Material.ENCHANTING_TABLE).setDisplayName("§5Create").setMultiLineLore("Wähle aus, ob du MultiXP- oder /n Erfahrungsflaschen erstellen /n willst.","/n","§7", false).build(), ()->{
             player.sendMessage("");
         }));
