@@ -33,6 +33,9 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
     private final InventoryContent content;
     private int switchAngabeVar = 0;
 
+    private boolean toManytoDrop = false;
+
+
     public MultiXPCreateFlasche(int size) {
         super(size);
         content = new InventoryContent();
@@ -97,16 +100,15 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
                 }
             } else {
                 content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lFehler").setMultiLineLore("Du hast nicht genügend Level oder /n Erfahrungspunkte, um die MultiXP /n Flasche zu erstellen!", "/n", "§c", false).build(), ()->{}));
-                content.fill(0, 9, new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
-                for (int i = 9; i <= 45; i+=9) {
-                    content.addGuiItem(i,  new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
-                    content.addGuiItem(8 + i,  new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
-                }
-                content.addGuiItem(46,  new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
-                content.fill(48, 51, new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
-                content.addGuiItem(52,  new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
+                setRedBorder(player);
             }
+        }
+
+        if (toManytoDrop){
+            setRedBorder(player);
+            content.addGuiItem(33,new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("Fehler - Platzhalter").setMultiLineLore("Platzhalter","/n","§c",false).build(),()->{}));
+            toManytoDrop = false;
         }
 
         createAnvilItem(player);
@@ -333,10 +335,29 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
                 Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flasche erfolgreich erstellt!");
                 InventoryMenuManager.getInstance().closeMenu(player);
             } else {
-                InventoryMenuManager.getInstance().closeMenu(player);
-               InventoryMenuManager.getInstance().openMenu(player, new ConfirmBottleDropMenu(flaschen, xpWert*anzahl));
+                int emptySlotsSize = (int) Arrays.stream(player.getInventory().getStorageContents()).filter(item -> item == null || item.getType() == Material.AIR).count();
+
+                if (640 >= (anzahl - emptySlotsSize * 64)) {
+                    InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
+                    InventoryMenuManager.getInstance().openMenu(player, new ConfirmBottleDropMenu(flaschen, xpWert * anzahl, true));
+                } else {
+                    toManytoDrop = true;
+                    InventoryMenuManager.getInstance().refreshMenu(player);
+                }
             }
         }));
+    }
+
+    private void setRedBorder(Player player){
+        content.fill(0, 9, new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
+        player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
+        for (int i = 9; i <= 45; i+=9) {
+            content.addGuiItem(i,  new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
+            content.addGuiItem(8 + i,  new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
+        }
+        content.addGuiItem(46,  new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
+        content.fill(48, 51, new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
+        content.addGuiItem(52,  new InventoryItem(new ItemManager(Material.RED_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
     }
 
     private boolean checkPlayerInvPlace(Player player, int flaschenanzahl){
