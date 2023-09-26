@@ -38,7 +38,8 @@ public class MultiXPCreate extends CustomMenu implements Closeable, SlotConditio
             InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreateFlasche(54));
         }));
         content.addGuiItem(32, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§dErfahrungsflasche").setMultiLineLore("Bei der Erfahrungsflasche werden die /n Level in normale Erfahrungsflaschen /n umgewandelt.", "/n", "§7", false).build(), ()->{
-            player.sendMessage("Test2");
+            InventoryMenuManager.getInstance().closeMenu(player);
+            InventoryMenuManager.getInstance().openMenu(player, new CreateNormalXpBottle());
         }));
         content.addGuiItem(47, new InventoryItem(new ItemManager(Material.ARROW).setDisplayName("§c§lZurück").build(), ()->{
             InventoryMenuManager.getInstance().closeMenu(player);
