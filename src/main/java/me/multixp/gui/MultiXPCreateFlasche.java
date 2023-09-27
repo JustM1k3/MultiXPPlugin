@@ -81,7 +81,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
         int anzahl = 1;
         if (PacketReader.getFlaschenAnzahlInput().containsKey(player.getUniqueId()) && checkValidAnvilInputFlaschenAnzahl(player) && checkInputToLong(PacketReader.getFlaschenAnzahlInput().get(player.getUniqueId()), player, true)){
             anzahl = Integer.parseInt(PacketReader.getFlaschenAnzahlInput().get(player.getUniqueId()));
-        } else if (PacketReader.getFlaschenAnzahlInput().containsKey(player.getUniqueId()) && !checkValidAnvilInputFlaschenAnzahl(player) && switchAngabeVar != 2){
+        } else if (PacketReader.getFlaschenAnzahlInput().containsKey(player.getUniqueId()) && !checkValidAnvilInputFlaschenAnzahl(player) && switchAngabeVar != 0){
             createAnvilItem(player);
             return content;
         }
@@ -91,9 +91,9 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
 
             if (checkAllValuesValidForBottleCreate(player, anzahl, wert)) {
                 switch (switchAngabeVar) {
-                    case 0 -> setResultBottle((int) ExpManager.getExpFromLevel(wert), wert, anzahl, player);
+                    case 2 -> setResultBottle((int) ExpManager.getExpFromLevel(wert), wert, anzahl, player);
                     case 1 -> setResultBottle(wert, ExpManager.getLevelFromExp(wert), anzahl, player);
-                    case 2 -> {
+                    case 0 -> {
                         int valueExp = (int) (ExpManager.getPlayerEXP(player) - (ExpManager.getExpFromLevel(player.getLevel() - wert) + ExpManager.getExpToNextLevel(player.getLevel() - wert, player.getExp())));
                         setResultBottle(valueExp, ExpManager.getLevelFromExp(valueExp), anzahl, player);
                     }
@@ -170,9 +170,9 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
     }
 
     private void switchAngabe(Player player) {
-        if (switchAngabeVar == 0) {
+        if (switchAngabeVar == 2) {
             content.addGuiItem(29, new InventoryItem(new ItemManager(Material.YELLOW_CONCRETE).setDisplayName("§6Angabe: §aLevel").setMultiLineLore("§8[Klicke um die Angabe zu wechseln] /n /n Bei dieser Angabe wird eine MultiXP /n Flasche erstellt, welche genau die /n Levelanzahl beinhaltet, die als /n Zahl angegeben wurde. Somit erhält /n der Spieler, wenn er Level 0 ist, /n genau die angegebene Levelanzahl nach /n Benutzung der MultiXP Flasche. ", "/n", "§7", false).build(), () -> {
-                switchAngabeVar = 1;
+                switchAngabeVar = 0;
                 switchAngabe(player);
                 PacketReader.getFlaschenAnzahlInput().remove(player.getUniqueId());
                 PacketReader.getLevelAnzahlInput().remove(player.getUniqueId());
@@ -190,7 +190,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
             }));
         } else{
              content.addGuiItem(29, new InventoryItem(new ItemManager(Material.GREEN_CONCRETE).setDisplayName("§6Angabe: §9Level").setMultiLineLore("§8[Klicke um die Angabe zu wechseln] /n /n Bei dieser Angabe wird dir die /n angegeben Zahl unten in der Levelleiste abgezogen. /n Da die Level von deinem momentanen Levelstand /n abgezogen werden, enthält die Flasche bei /n gleich gewählter Zahl trotzdem mehr Erfahrungspunkte /n je höher dein Levelstand ist.", "/n", "§7", false).build(), () -> {
-                 switchAngabeVar = 0;
+                 switchAngabeVar = 1;
                  switchAngabe(player);
                  PacketReader.getFlaschenAnzahlInput().remove(player.getUniqueId());
                  PacketReader.getLevelAnzahlInput().remove(player.getUniqueId());
@@ -210,7 +210,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
         }
 
         switch (switchAngabeVar) {
-            case 0 -> {
+            case 2 -> {
                 content.addGuiItem(30, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Levelanzahl: §a" + value).setMultiLineLore("Gib die Anzahl der Level an, die du /n in deiner MultiXP Flasche speichern /n möchtest.", "/n", "§7", false).build(), () -> {
                     saveMenus(player);
                     InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
@@ -226,7 +226,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
                     AnvilMenuManager.createAnvilMenu(player, new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName(" ").setMultiLineLore("Gib den Erfahrungswert an, den du /n in deiner MultiXP Flasche speichern /n möchtest.", "/n", "§7", false).build(), "Erfahrungswert");
                 }));
             }
-            case 2 -> {
+            case 0 -> {
                 content.addGuiItem(30, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Levelanzahl: §a" + value).setMultiLineLore("Gib die Anzahl der Level an, die du /n von deiner Levelleiste abziehen /n möchtest.", "/n", "§7", false).build(), () -> {
                     saveMenus(player);
                     InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
@@ -236,7 +236,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
             }
 
         }
-        if (switchAngabeVar != 2) {
+        if (switchAngabeVar != 0) {
             value = "1";
 
             if (PacketReader.getFlaschenAnzahlInput().containsKey(player.getUniqueId()) && checkValidAnvilInputFlaschenAnzahl(player)) {
@@ -269,14 +269,14 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
     }
 
     private boolean checkAllValuesValidForBottleCreate(Player player, int anzahl, int value) {
-        if (!checkValidAnvilInputFlaschenAnzahl(player) && switchAngabeVar == 2) {
+        if (!checkValidAnvilInputFlaschenAnzahl(player) && switchAngabeVar == 0) {
             return false;
         }
         if (!checkValidAnvilInputLevelAnzahl(player)) {
             return false;
         }
         switch (switchAngabeVar) {
-            case 0 -> {
+            case 2 -> {
                 if (value > 24791) {
                     return false;
                 }
@@ -292,7 +292,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
                     return false;
                 }
             }
-            case 2 -> {
+            case 0 -> {
                 if (value > 24791) {
                     return false;
                 }

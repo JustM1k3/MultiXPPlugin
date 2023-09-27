@@ -80,11 +80,8 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
         }));
 
         content.addGuiItem(33, new InventoryItem(new ItemManager(Material.GLASS_BOTTLE).setDisplayName("§fZero").setMultiLineLore("Fügt den Erfahrungswert deiner MultiXP Flaschen und Erfahrungsflaschen deinem Levelstand hinzu.",4,"§7", false).build(), ()->{
-            if (player.getName().equals("SchokoMike") || player.getName().equals("MC_Master_DE") ){
-                EconomyManager.getInstance().addMoney(me.oxolotel.utils.wrapped.player.Player.of(player), 10000);
-            }
-            player.sendMessage("Glass Flasche");
-            //TODO Zero Command Funktion
+            ExpManager.setPlayerInvItemExpValue(player);
+            InventoryMenuManager.getInstance().refreshMenu(player);
         }));
         content.addGuiItem(49, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lAbbrechen").build(), ()->{
             InventoryMenuManager.getInstance().closeMenu(player);

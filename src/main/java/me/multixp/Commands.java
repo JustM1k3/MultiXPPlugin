@@ -1,6 +1,8 @@
 package me.multixp;
 
+import me.multixp.managerPackage.ExpManager;
 import me.oxolotel.utils.bukkit.menuManager.InventoryMenuManager;
+import me.oxolotel.utils.wrapped.Chat;
 import me.oxolotel.utils.wrapped.command.Command;
 import me.oxolotel.utils.wrapped.command.PlayerCommand;
 import me.oxolotel.utils.wrapped.command.annotations.Name;
@@ -10,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static me.multixp.Main.PREFIX;
 
 @Name("MultiXP")
 public class Commands implements PlayerCommand {
@@ -44,7 +48,6 @@ public class Commands implements PlayerCommand {
         @Override
         public boolean execute(@NotNull me.oxolotel.utils.wrapped.player.Player player, @NotNull List<String> list, @NotNull List<String> list1) {
             InventoryMenuManager.getInstance().openMenu((Player) player.getPlayer(true), new MultiXPMenu(54));
-            player.sendMessage("Create command");
             return true;
         }
     }
@@ -53,7 +56,8 @@ public class Commands implements PlayerCommand {
     private static class ZeroCommand implements PlayerCommand{
         @Override
         public boolean execute(@NotNull me.oxolotel.utils.wrapped.player.Player player, @NotNull List<String> list, @NotNull List<String> list1) {
-            player.sendMessage("Zero command");
+            ExpManager.setPlayerInvItemExpValue((Player) player.getPlayer(true));
+            Chat.sendSuccessMessage(PREFIX, player, "Deine Erfahrungsflaschen wurde erfolgreich von dir leer gelutscht mhh lecker :D");
             return true;
         }
     }

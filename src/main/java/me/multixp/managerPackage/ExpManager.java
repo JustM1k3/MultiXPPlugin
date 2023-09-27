@@ -9,9 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 
 public class ExpManager {
 
@@ -145,6 +143,43 @@ public class ExpManager {
         }
 
         return createBottle(xpSum, getLevelFromExp(xpSum));
+    }
+
+    public static double xpPerBottle() {
+        Random rand = new Random();
+        return ((rand.nextFloat() * (11 - 3)) + 3);
+    }
+
+    public static void setPlayerInvItemExpValue(Player player){
+        int xpValue = 0;
+
+        for (ItemStack item:player.getInventory().getContents()) {
+            if (item == null){
+                continue;
+            }
+
+            if (item.getType() == Material.EXPERIENCE_BOTTLE){
+                if (checkForMultiXPFlasche(item)){
+                    String xpLore = item.getItemMeta().getLore().get(4);
+                    String[] arr = xpLore.split(" ");
+
+                    xpValue += Integer.parseInt(arr[1].substring(2)) * item.getAmount();
+                }else {
+                    ItemMeta meta = item.getItemMeta();
+                    if (meta != null){
+                        if (meta.hasDisplayName() || meta.hasLore()){
+                            continue;
+                        }
+                    }
+
+                    for (int i = 0; i < item.getAmount(); i++) {
+                        xpValue += (int) xpPerBottle();
+                    }
+                }
+                player.getInventory().remove(item);
+            }
+        }
+        player.giveExp(xpValue, false);
     }
 
     public ExpManager(){
