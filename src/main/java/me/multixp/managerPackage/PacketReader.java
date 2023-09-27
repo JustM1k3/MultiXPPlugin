@@ -105,6 +105,8 @@ public class PacketReader {
                     e.printStackTrace();
                 }
 
+                AnvilMenuManager.removeInv(invFound);
+
                 new BukkitRunnable() {
                     int counter = 0;
                     @Override
