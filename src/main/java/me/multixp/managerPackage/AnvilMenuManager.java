@@ -60,6 +60,12 @@ public class AnvilMenuManager implements Listener {
                 Player p = (Player) e.getPlayer();
                 p.setLevel(p.getLevel()-1);
             }
+
+            PacketReader.getNormalFlascheAnzahl().remove(e.getPlayer().getUniqueId());
+            PacketReader.getLevelAnzahlInput().remove(e.getPlayer().getUniqueId());
+            PacketReader.getFlaschenAnzahlInput().remove(e.getPlayer().getUniqueId());
+            PacketReader.openMenus.remove(e.getPlayer().getUniqueId());
+            PacketReader.getNormalFlascheAnzahlStacks().remove(e.getPlayer().getUniqueId());
         }
     }
 
