@@ -101,6 +101,7 @@ public class ConfirmBottleDropMenu  extends CustomMenu implements Closeable, Slo
             } else {
                 Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Erfahrungsflaschen erfolgreich erstellt!");
             }
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
             InventoryMenuManager.getInstance().closeMenu(player);
         }));
 

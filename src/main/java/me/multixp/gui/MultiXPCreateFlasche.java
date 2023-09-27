@@ -332,6 +332,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
             if (checkPlayerInvPlace(player, anzahl)){
                 flaschen.forEach(flasche -> player.getInventory().addItem(flasche));
                 ExpManager.removeExpFromPlayer(player, xpWert * anzahl);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
                 Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flasche erfolgreich erstellt!");
                 InventoryMenuManager.getInstance().closeMenu(player);
             } else {

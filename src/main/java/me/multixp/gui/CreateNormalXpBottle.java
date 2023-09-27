@@ -350,6 +350,7 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
                 for (int i = 0; i < anzahl; i++) {
                     player.getInventory().addItem(new ItemStack(Material.EXPERIENCE_BOTTLE));
                 }
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
                 InventoryMenuManager.getInstance().closeMenu(player);
             } else {
                 int emptySlotsSize = (int) Arrays.stream(player.getInventory().getStorageContents()).filter(item -> item == null || item.getType() == Material.AIR).count();

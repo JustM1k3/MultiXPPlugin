@@ -1,5 +1,6 @@
 package me.multixp;
 
+import me.multixp.gui.MultiXPCreate;
 import me.multixp.managerPackage.ExpManager;
 import me.oxolotel.utils.bukkit.menuManager.InventoryMenuManager;
 import me.oxolotel.utils.wrapped.Chat;
@@ -48,7 +49,7 @@ public class Commands implements PlayerCommand {
     private static class CreateCommand implements PlayerCommand{
         @Override
         public boolean execute(@NotNull me.oxolotel.utils.wrapped.player.Player player, @NotNull List<String> list, @NotNull List<String> list1) {
-            InventoryMenuManager.getInstance().openMenu((Player) player.getPlayer(true), new MultiXPMenu(54));
+            InventoryMenuManager.getInstance().openMenu((Player) player.getPlayer(true), new MultiXPCreate());
             return true;
         }
     }
@@ -60,6 +61,15 @@ public class Commands implements PlayerCommand {
             Player p = (Player)player.getPlayer(true);
             ExpManager.setPlayerInvItemExpValue(p);
             p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
+            return true;
+        }
+    }
+
+    @Name("merge")
+    private static class MergeCommand implements PlayerCommand{
+        @Override
+        public boolean execute(@NotNull me.oxolotel.utils.wrapped.player.Player player, @NotNull List<String> list, @NotNull List<String> list1) {
+            ExpManager.multiXPMerge((Player) player.getPlayer(true));
             return true;
         }
     }
