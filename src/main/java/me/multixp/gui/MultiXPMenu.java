@@ -25,8 +25,8 @@ import static me.multixp.Main.PREFIX;
 
 
 public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition {
-    public MultiXPMenu(int size) {
-        super(size);
+    public MultiXPMenu() {
+        super(54);
         setTitle("MultiXP");
     }
 
@@ -49,34 +49,10 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
         content.addGuiItem(13, new InventoryItem(new SkullManager(player).setDisplayName("§9EXP-Info §7von §6"+ player.getName()).setLoreComponent(headLore).build(), ()->{}));
         content.addGuiItem(29, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§5Create").setMultiLineLore("Wandelt deine Level zu MultiXP- oder Erfahrungsflaschen um.", 4, "§7", false).build(), ()->{
             InventoryMenuManager.getInstance().closeMenu(player);
-            InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreate(54));
+            InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreate());
         }));
         content.addGuiItem(31, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§5Merge").setMultiLineLore("Kombiniert alle MultiXP Flaschen in /n deinem Inventar zu einer MultiXP Flasche.","/n", "§7", false).build(), ()-> {
-            ArrayList<ItemStack> itemList = new ArrayList<>();
-
-            for (ItemStack item : player.getInventory().getContents()) {
-                if (item != null && ExpManager.checkForMultiXPFlasche(item)) {
-                    itemList.add(item);
-                }
-            }
-            if (itemList.size() < 2) {
-                Chat.sendErrorMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Es können keine MultiXP Flaschen in deinem Inventar zusammengefügt werden!");
-                return;
-            }
-
-            for (ItemStack item:itemList) {
-                player.getInventory().remove(item);
-            }
-
-            if (ExpManager.checkPlayerInvPlace(player, 1)) {
-                player.getInventory().addItem(ExpManager.mergeMultiXPFlaschen(itemList));
-                InventoryMenuManager.getInstance().closeMenu(player);
-            } else {
-                InventoryMenuManager.getInstance().closeMenu(player);
-                InventoryMenuManager.getInstance().openMenu(player, new ConfirmBottleDropMenu(new ArrayList<ItemStack>((Collection) ExpManager.mergeMultiXPFlaschen(itemList)), 0, true));
-            }
-            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
-            Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flaschen erfolgreich zusammengefügt!");
+            ExpManager.multiXPMerge(player);
         }));
 
         content.addGuiItem(33, new InventoryItem(new ItemManager(Material.GLASS_BOTTLE).setDisplayName("§fZero").setMultiLineLore("Fügt den Erfahrungswert deiner MultiXP Flaschen und Erfahrungsflaschen deinem Levelstand hinzu.",4,"§7", false).build(), ()->{

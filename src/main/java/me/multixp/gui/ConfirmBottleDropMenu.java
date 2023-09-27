@@ -59,7 +59,7 @@ public class ConfirmBottleDropMenu  extends CustomMenu implements Closeable, Slo
         content.addGuiItem(12, new InventoryItem(new ItemManager(Material.RED_BANNER).setDisplayName("§cAbbrechen").build(), ()->{
             InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
             if (multiXpFlaschen) {
-                InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreateFlasche(54));
+                InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreateFlasche());
             }else {
                 InventoryMenuManager.getInstance().openMenu(player, new CreateNormalXpBottle());
             }

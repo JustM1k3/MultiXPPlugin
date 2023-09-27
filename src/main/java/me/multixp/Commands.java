@@ -6,6 +6,8 @@ import me.oxolotel.utils.wrapped.Chat;
 import me.oxolotel.utils.wrapped.command.Command;
 import me.oxolotel.utils.wrapped.command.PlayerCommand;
 import me.oxolotel.utils.wrapped.command.annotations.Name;
+import me.oxolotel.utils.wrapped.command.sender.CommandSender;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import me.multixp.gui.MultiXPMenu;
 import org.jetbrains.annotations.NotNull;
@@ -17,29 +19,28 @@ import static me.multixp.Main.PREFIX;
 
 @Name("MultiXP")
 public class Commands implements PlayerCommand {
-
-
     @NotNull
     @Override
     public List<Command> getSubCommands() {
         return List.of(
                 new HelpCommand(),
                 new CreateCommand(),
-                new ZeroCommand()
+                new ZeroCommand(),
+                new MergeCommand()
         );
     }
 
     @Override
     public boolean execute(@NotNull me.oxolotel.utils.wrapped.player.Player player, @NotNull List<String> list, @NotNull List<String> list1) {
-        return false;
+        InventoryMenuManager.getInstance().openMenu((Player) player.getPlayer(true), new MultiXPMenu());
+        return true;
     }
 
     @Name("help")
     private static class HelpCommand implements PlayerCommand{
         @Override
         public boolean execute(@NotNull me.oxolotel.utils.wrapped.player.Player player, @NotNull List<String> list, @NotNull List<String> list1) {
-            player.sendMessage("help command");
-            return true;
+            return false;
         }
     }
 
@@ -56,8 +57,9 @@ public class Commands implements PlayerCommand {
     private static class ZeroCommand implements PlayerCommand{
         @Override
         public boolean execute(@NotNull me.oxolotel.utils.wrapped.player.Player player, @NotNull List<String> list, @NotNull List<String> list1) {
-            ExpManager.setPlayerInvItemExpValue((Player) player.getPlayer(true));
-            Chat.sendSuccessMessage(PREFIX, player, "Deine Erfahrungsflaschen wurde erfolgreich von dir leer gelutscht mhh lecker :D");
+            Player p = (Player)player.getPlayer(true);
+            ExpManager.setPlayerInvItemExpValue(p);
+            p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
             return true;
         }
     }

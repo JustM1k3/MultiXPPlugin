@@ -60,7 +60,7 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
 
         content.addGuiItem(47, new InventoryItem(new ItemManager(Material.ARROW).setDisplayName("§c§lZurück").build(), ()->{
             InventoryMenuManager.getInstance().closeMenu(player);
-            InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreate(54));
+            InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreate());
         }));
         content.addGuiItem(51, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lAbbrechen").build(), ()->{
             InventoryMenuManager.getInstance().closeMenu(player);
@@ -195,7 +195,7 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
         int xpValue = 0;
 
         for (int i = 0; i < (stacks * 64 + anzahl); i++) {
-            xpValue += (int) ExpManager.xpPerBottle();
+            xpValue += (int) Math.round(ExpManager.xpPerBottle());
         }
         return xpValue;
     }
@@ -214,7 +214,7 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
 
     private int getBootleSizeByExp(int expValue){
         int bottleCount = 0;
-        for (int i = 0; i <= expValue;i += (int) ExpManager.xpPerBottle()){
+        for (int i = 0; i <= expValue;i += (int)Math.round(ExpManager.xpPerBottle())){
             bottleCount++;
         }
         return bottleCount;

@@ -11,8 +11,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class MultiXPCreate extends CustomMenu implements Closeable, SlotCondition {
 
-    public MultiXPCreate(int size) {
-        super(size);
+    public MultiXPCreate() {
+        super(54);
         setTitle("MultiXP - Create");
     }
 
@@ -37,7 +37,7 @@ public class MultiXPCreate extends CustomMenu implements Closeable, SlotConditio
         }));
         content.addGuiItem(30, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setMultiLineLore("Bei der MultiXP Flasche werden alle /n Level in eine Flasche gefüllt. Unter /n der Flasche wird die Anzahl an Level /n und Exp angezeigt.", "/n", "§7", false).build(), ()->{
             InventoryMenuManager.getInstance().closeMenu(player);
-            InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreateFlasche(54));
+            InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreateFlasche());
         }));
         content.addGuiItem(32, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§dErfahrungsflasche").setMultiLineLore("Bei der Erfahrungsflasche werden die /n Level in normale Erfahrungsflaschen /n umgewandelt.", "/n", "§7", false).build(), ()->{
             InventoryMenuManager.getInstance().closeMenu(player);
@@ -45,7 +45,7 @@ public class MultiXPCreate extends CustomMenu implements Closeable, SlotConditio
         }));
         content.addGuiItem(47, new InventoryItem(new ItemManager(Material.ARROW).setDisplayName("§c§lZurück").build(), ()->{
             InventoryMenuManager.getInstance().closeMenu(player);
-            InventoryMenuManager.getInstance().openMenu(player, new MultiXPMenu(54));
+            InventoryMenuManager.getInstance().openMenu(player, new MultiXPMenu());
         }));
         content.addGuiItem(51, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lAbbrechen").build(), ()->{
             InventoryMenuManager.getInstance().closeMenu(player);

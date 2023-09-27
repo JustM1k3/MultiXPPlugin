@@ -36,8 +36,8 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
     private boolean toManytoDrop = false;
 
 
-    public MultiXPCreateFlasche(int size) {
-        super(size);
+    public MultiXPCreateFlasche() {
+        super(54);
         content = new InventoryContent();
         setTitle("Create - MultiXP Flasche");
     }
@@ -72,7 +72,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
 
         content.addGuiItem(47, new InventoryItem(new ItemManager(Material.ARROW).setDisplayName("§c§lZurück").build(), ()->{
             InventoryMenuManager.getInstance().closeMenu(player);
-            InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreate(54));
+            InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreate());
         }));
         content.addGuiItem(51, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lAbbrechen").build(), ()->{
             InventoryMenuManager.getInstance().closeMenu(player);

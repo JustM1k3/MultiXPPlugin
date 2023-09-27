@@ -1,8 +1,12 @@
 package me.multixp.managerPackage;
 
+import me.multixp.gui.ConfirmBottleDropMenu;
+import me.oxolotel.utils.bukkit.menuManager.InventoryMenuManager;
+import me.oxolotel.utils.wrapped.Chat;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -10,6 +14,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.Array;
 import java.util.*;
+
+import static me.multixp.Main.PREFIX;
 
 public class ExpManager {
 
@@ -173,13 +179,47 @@ public class ExpManager {
                     }
 
                     for (int i = 0; i < item.getAmount(); i++) {
-                        xpValue += (int) xpPerBottle();
+                        xpValue += (int) Math.round(xpPerBottle());
                     }
                 }
                 player.getInventory().remove(item);
             }
         }
-        player.giveExp(xpValue, false);
+        if (xpValue == 0){
+            Chat.sendErrorMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Du hast keine Erfahrungsflaschen in deinem Inventar die du lutschen kannst L O S E R");
+        } else {
+            player.giveExp(xpValue, false);
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
+            Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Deine Erfahrungsflaschen wurde erfolgreich von dir leer gelutscht mhh lecker :D");
+        }
+    }
+
+    public static void multiXPMerge(Player player){
+        ArrayList<ItemStack> itemList = new ArrayList<>();
+
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item != null && ExpManager.checkForMultiXPFlasche(item)) {
+                itemList.add(item);
+            }
+        }
+        if (itemList.size() < 2) {
+            Chat.sendErrorMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Es können keine MultiXP Flaschen in deinem Inventar zusammengefügt werden!");
+            return;
+        }
+
+        for (ItemStack item:itemList) {
+            player.getInventory().remove(item);
+        }
+
+        if (ExpManager.checkPlayerInvPlace(player, 1)) {
+            player.getInventory().addItem(ExpManager.mergeMultiXPFlaschen(itemList));
+            InventoryMenuManager.getInstance().closeMenu(player);
+        } else {
+            InventoryMenuManager.getInstance().closeMenu(player);
+            InventoryMenuManager.getInstance().openMenu(player, new ConfirmBottleDropMenu(new ArrayList<ItemStack>((Collection) ExpManager.mergeMultiXPFlaschen(itemList)), 0, true));
+        }
+        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
+        Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flaschen erfolgreich zusammengefügt!");
     }
 
     public ExpManager(){
