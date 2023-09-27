@@ -195,7 +195,7 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
         int xpValue = 0;
 
         for (int i = 0; i < (stacks * 64 + anzahl); i++) {
-            xpValue += (int) xpPerBottle();
+            xpValue += (int) ExpManager.xpPerBottle();
         }
         return xpValue;
     }
@@ -214,17 +214,11 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
 
     private int getBootleSizeByExp(int expValue){
         int bottleCount = 0;
-        for (int i = 0; i <= expValue;i += (int) xpPerBottle()){
+        for (int i = 0; i <= expValue;i += (int) ExpManager.xpPerBottle()){
             bottleCount++;
         }
         return bottleCount;
     }
-
-    private double xpPerBottle() {
-        Random rand = new Random();
-        return ((rand.nextFloat() * (11 - 3)) + 3);
-    }
-
 
     private boolean levelAngabeValidInput(Player player){
         boolean check = false;
