@@ -87,7 +87,7 @@ public class PacketReader {
                     levelAnzahlInput.put(p.getUniqueId(), input);
                 }else if (p.getOpenInventory().getTitle().equalsIgnoreCase("Stacks")) {
                     normalFlascheAnzahlStacks.put(p.getUniqueId(), input);
-                } else if (p.getOpenInventory().getTitle().equalsIgnoreCase("Anzahl")) {
+                } else if (p.getOpenInventory().getTitle().equalsIgnoreCase("Einzelangabe")) {
                     normalFlascheAnzahl.put(p.getUniqueId(), input);
                 } else {
                     flaschenAnzahlInput.put(p.getUniqueId(), input);

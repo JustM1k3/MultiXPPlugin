@@ -33,7 +33,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
     private final InventoryContent content;
     private int switchAngabeVar = 0;
 
-    private boolean toManytoDrop = false;
+    private int toManytoDrop = -1;
 
 
     public MultiXPCreateFlasche() {
@@ -105,7 +105,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
             }
         }
 
-        if (toManytoDrop){
+        if (toManytoDrop != -1){
             setRedBorder(player);
             content.addGuiItem(33,new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("Fehler - Platzhalter").setMultiLineLore("Platzhalter","/n","§c",false).build(),()->{}));
             toManytoDrop = false;
@@ -342,7 +342,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
                     InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
                     InventoryMenuManager.getInstance().openMenu(player, new ConfirmBottleDropMenu(flaschen, xpWert * anzahl, true));
                 } else {
-                    toManytoDrop = true;
+                    toManytoDrop = 10 + emptySlotsSize;
                     InventoryMenuManager.getInstance().refreshMenu(player);
                 }
             }

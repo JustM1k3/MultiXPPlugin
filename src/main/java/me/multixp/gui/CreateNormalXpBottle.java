@@ -1,6 +1,5 @@
 package me.multixp.gui;
 
-import com.comphenix.protocol.wrappers.Pair;
 import me.multixp.managerPackage.AnvilMenuManager;
 import me.multixp.managerPackage.ExpManager;
 import me.multixp.managerPackage.ItemManager;
@@ -29,8 +28,8 @@ import static me.multixp.Main.PREFIX;
 
 public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotCondition {
     private int switchAngabeVar = 0;
-    private InventoryContent content;
-    private boolean toManytoDrop = false;
+    private final InventoryContent content;
+    private int toManytoDrop = -1;
 
     public CreateNormalXpBottle() {
         super(54);
@@ -40,7 +39,7 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
 
     @Override
     public void onClose(Player player, ItemStack[] itemStacks, CloseReason closeReason) {
-        if (closeReason != CloseReason.CHANGEMENU){
+        if (closeReason != CloseReason.CHANGEMENU) {
             PacketReader.openMenus.remove(player.getUniqueId());
             PacketReader.getNormalFlascheAnzahl().remove(player.getUniqueId());
             PacketReader.getLevelAnzahlInput().remove(player.getUniqueId());
@@ -50,49 +49,59 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
 
     @Override
     public InventoryContent getContents(Player player) {
-        content.fill(0,54, new InventoryItem(new ItemManager(getInventoryBorder(player)).setDisplayName(" ").build(), ()->{}));
-        content.fill(10,17, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
-        content.fill(19,26, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
-        content.fill(28,35, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
-        content.fill(37,44, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
+        content.fill(0, 54, new InventoryItem(new ItemManager(getInventoryBorder(player)).setDisplayName(" ").build(), () -> {
+        }));
+        content.fill(10, 17, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), () -> {
+        }));
+        content.fill(19, 26, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), () -> {
+        }));
+        content.fill(28, 35, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), () -> {
+        }));
+        content.fill(37, 44, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), () -> {
+        }));
 
-        content.addGuiItem(13, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("Erfahrungsflasche :)").setMultiLineLore("Platzhalter", "/n", "§7", false).build(), ()->{}));
+        content.addGuiItem(13, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§dErfahrungsflasche").setMultiLineLore("Klicke auf den farbigen Beton, /n um zwischen den beiden /n Angabemöglichkeiten zu /n wechseln. Über die Ambosse kannst du die Levelanzahl und /n die Flaschenanzahl ändern.", "/n", "§7", false).build(), () -> {
+        }));
 
-        content.addGuiItem(47, new InventoryItem(new ItemManager(Material.ARROW).setDisplayName("§c§lZurück").build(), ()->{
+        content.addGuiItem(47, new InventoryItem(new ItemManager(Material.ARROW).setDisplayName("§c§lZurück").build(), () -> {
             InventoryMenuManager.getInstance().closeMenu(player);
             InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreate());
         }));
-        content.addGuiItem(51, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lAbbrechen").build(), ()->{
+        content.addGuiItem(51, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lAbbrechen").build(), () -> {
             InventoryMenuManager.getInstance().closeMenu(player);
         }));
 
-        createAnvils(player);
-        switchAngabe(player);
-
-        if(!(levelAngabeValidInput(player) && normalFlaschenAnzahlStackValidInput(player) && normalFlaschenAnzahlValidInput(player))){
+        if (!(levelAngabeValidInput(player) && normalFlaschenAnzahlStackValidInput(player) && normalFlaschenAnzahlValidInput(player))) {
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
             content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lUngültige Eingabe").setMultiLineLore("Eine deiner Eingaben /n ist ungültig!", "/n", "§c", false).build(), ()->{
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
             }));
         } else {
-            content.addGuiItem(33, new InventoryItem(new ItemStack(Material.AIR), ()->{}));
+            content.addGuiItem(33, new InventoryItem(new ItemStack(Material.AIR), () -> {
+            }));
         }
 
-        if (switchAngabeVar == 0){
+        if (switchAngabeVar == 0) {
+            checkInputToLong(PacketReader.getLevelAnzahlInput().get(player.getUniqueId()), player, 1);
             if (checkLevelAngabeInputComplitly(player)) {
                 int lvlInput = Integer.parseInt(PacketReader.getLevelAnzahlInput().get(player.getUniqueId()));
 
-                int valueExp = (int) (ExpManager.getPlayerEXP(player) - (ExpManager.getExpFromLevel(player.getLevel() - lvlInput) + ExpManager.getExpToNextLevel(player.getLevel() - lvlInput, player.getExp())));
-                int bottleCount = getBootleSizeByExp(valueExp);
-                setResultBottle(valueExp,  bottleCount, player);
+                if (lvlInput != 0) {
+                    int valueExp = (int) (ExpManager.getPlayerEXP(player) - (ExpManager.getExpFromLevel(player.getLevel() - lvlInput) + ExpManager.getExpToNextLevel(player.getLevel() - lvlInput, player.getExp())));
+                    int bottleCount = getBootleSizeByExp(valueExp);
+                    setResultBottle(valueExp, bottleCount, player);
+                }
             }
         } else {
-            if (checkAnzahlAngabeInputComplitly(player)){
+            checkInputToLong(PacketReader.getNormalFlascheAnzahl().get(player.getUniqueId()), player, 0);
+            checkInputToLong(PacketReader.getNormalFlascheAnzahlStacks().get(player.getUniqueId()), player, 2);
+
+            if (checkAnzahlAngabeInputComplitly(player)) {
                 int anzahl = 0;
                 int stacks = 0;
                 boolean containsOne = false;
 
-                if (PacketReader.getNormalFlascheAnzahl().containsKey(player.getUniqueId())){
+                if (PacketReader.getNormalFlascheAnzahl().containsKey(player.getUniqueId())) {
                     anzahl = Integer.parseInt(PacketReader.getNormalFlascheAnzahl().get(player.getUniqueId()));
                     containsOne = true;
                 }
@@ -102,24 +111,45 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
                     containsOne = true;
                 }
 
-                if (containsOne) {
-                    setResultBottle(xpValueByAnzahl(anzahl, stacks, player), (stacks * 64 + anzahl), player);
+                if (containsOne && (anzahl != 0 || stacks != 0)) {
+                    setResultBottle(xpValueByAnzahl(anzahl, stacks), (stacks * 64 + anzahl), player);
                 }
             }
         }
 
-        if (toManytoDrop){
+        createAnvils(player);
+        switchAngabe(player);
+
+        if (toManytoDrop != -1) {
             setRedBorder(player);
-            content.addGuiItem(33,new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("Fehler - Platzhalter").setMultiLineLore("Platzhalter","/n","§c",false).build(),()->{}));
-            toManytoDrop = false;
+            content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lFehler").setMultiLineLore("Die Flaschenanzahl ist zu groß! /n Es können maximal 36 Stacks /n Erfahrungsflaschen aus deinem /n Inventar gedroppt werden. Du /n kannst aktuell maximal " + toManytoDrop + " Stacks /n Flaschen erstellen!", "/n", "§c", false).build(), () -> {
+            }));
+            toManytoDrop = -1;
         }
 
         return content;
     }
 
-    private void switchAngabe(Player player){
-        if (switchAngabeVar == 0){
-            content.addGuiItem(29, new InventoryItem(new ItemManager(Material.YELLOW_CONCRETE).setDisplayName("§6Angabe: §aLevel").setMultiLineLore("§8[Klicke um die Angabe zu wechseln] /n /n Bei dieser Angabe werden dir /n deine Angegeben Level abgezogen /n und Erfahrungsflasche umgewandelt.", "/n", "§7", false).build(), () -> {
+    private void checkInputToLong(String input, Player p, int typ) {
+        if (input == null || input.isEmpty()) {
+            return;
+        }
+        try {
+            Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            if (typ == 0) {
+                PacketReader.getNormalFlascheAnzahl().remove(p.getUniqueId());
+            } else if (typ == 1) {
+                PacketReader.getLevelAnzahlInput().remove(p.getUniqueId());
+            } else {
+                PacketReader.getNormalFlascheAnzahlStacks().remove(p.getUniqueId());
+            }
+        }
+    }
+
+    private void switchAngabe(Player player) {
+        if (switchAngabeVar == 0) {
+            content.addGuiItem(29, new InventoryItem(new ItemManager(Material.YELLOW_CONCRETE).setDisplayName("§6Angabe: §9Level").setMultiLineLore("§8[Klicke, um die Angabe zu wechseln] /n /n Bei dieser Angabe werden dir /n deine angegebenen Level abgezogen /n und in Erfahrungsflaschen umgewandelt.", "/n", "§7", false).build(), () -> {
                 switchAngabeVar = 1;
                 switchAngabe(player);
                 PacketReader.getNormalFlascheAnzahl().remove(player.getUniqueId());
@@ -128,7 +158,7 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
                 InventoryMenuManager.getInstance().getOpenMenu(player).refresh();
             }));
         } else {
-            content.addGuiItem(29, new InventoryItem(new ItemManager(Material.GREEN_CONCRETE).setDisplayName("§6Angabe: §aAnzahl").setMultiLineLore("§8[Klicke um die Angabe zu wechseln] /n /n Bei dieser Angabe kannst du /n eingeben, wieviele Erfahrungsflaschen /n du erhalten möchtest. Dir wird anschließend /n der entsprechende Erfahrungswert abgezogen und /n in Erfahrungsflasche umgewandelt.", "/n", "§7", false).build(), () -> {
+            content.addGuiItem(29, new InventoryItem(new ItemManager(Material.GREEN_CONCRETE).setDisplayName("§6Angabe: §5Anzahl").setMultiLineLore("§8[Klicke, um die Angabe zu wechseln] /n /n Bei dieser Angabe kannst du /n angeben, wie viele Erfahrungsflaschen /n du erhalten möchtest. Dir wird anschließend /n der entsprechende Erfahrungswert abgezogen und /n in Erfahrungsflaschen umgewandelt.", "/n", "§7", false).build(), () -> {
                 switchAngabeVar = 0;
                 switchAngabe(player);
                 PacketReader.getLevelAnzahlInput().remove(player.getUniqueId());
@@ -137,23 +167,18 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
             }));
         }
     }
-    
-    private boolean checkLevelAngabeInputComplitly(Player player){
+
+    private boolean checkLevelAngabeInputComplitly(Player player) {
         if (levelAngabeValidInput(player)) {
             if (PacketReader.getLevelAnzahlInput().containsKey(player.getUniqueId())) {
                 int lvl = Integer.parseInt(PacketReader.getLevelAnzahlInput().get(player.getUniqueId()));
 
-                if (lvl <= 24791) {
-                    if (player.getLevel() >= lvl) {
-                        return true;
-                    } else {
-                        player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
-                        content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lFehler").setMultiLineLore("Du hast nicht genügend Level, um die Erfahrungsflaschen /n zu erstellen!", "/n", "§c", false).build(), ()->{}));
-                        setRedBorder(player);
-                    }
+                if (lvl <= 24791 && player.getLevel() >= lvl) {
+                    return true;
                 } else {
                     player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
-                    content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lUngültige Eingabe").setMultiLineLore("Deine Level Eingabe /n ist zu groß!", "/n", "§c", false).build(), ()->{}));
+                    content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lFehler").setMultiLineLore("Du hast nicht genügend Level, um die Erfahrungsflaschen /n zu erstellen!", "/n", "§c", false).build(), () -> {
+                    }));
                     setRedBorder(player);
                 }
             }
@@ -178,7 +203,7 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
             }
 
             if (containsOne) {
-                if (xpValueByAnzahl(anzahl, stacks, player) <= ExpManager.getPlayerEXP(player)) {
+                if (xpValueByAnzahl(anzahl, stacks) <= ExpManager.getPlayerEXP(player)) {
                     return true;
                 } else {
                     player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
@@ -191,7 +216,7 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
         return false;
     }
 
-    private int xpValueByAnzahl(int anzahl, int stacks, Player player){
+    private int xpValueByAnzahl(int anzahl, int stacks){
         int xpValue = 0;
 
         for (int i = 0; i < (stacks * 64 + anzahl); i++) {
@@ -272,7 +297,7 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
                 value = "§c" + PacketReader.getLevelAnzahlInput().get(player.getUniqueId());
             }
 
-            content.addGuiItem(31, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Level Angabe: §a" + value).setMultiLineLore("Gib die Anzahl an Level ein, /n die du in Erfahrungsflaschen /n umwandelt möchtest.", "/n", "§7", false ).build(), () -> {
+            content.addGuiItem(31, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Level Angabe: §a" + value).setMultiLineLore("Gib die Anzahl an Level an, /n die du in Erfahrungsflaschen /n umwandeln möchtest.", "/n", "§7", false ).build(), () -> {
                 saveMenus(player);
                 InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
                 AnvilMenuManager.levelFix(player);
@@ -283,28 +308,28 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
 
             if (normalFlaschenAnzahlStackValidInput(player) && PacketReader.getNormalFlascheAnzahlStacks().containsKey(player.getUniqueId())) {
                 valueStack = PacketReader.getNormalFlascheAnzahlStacks().get(player.getUniqueId());
-            } else if (PacketReader.getNormalFlascheAnzahlStacks().containsKey(player.getUniqueId()) && !checkValidAnvilInput(PacketReader.getNormalFlascheAnzahlStacks().get(player.getUniqueId()))) {
+            } else if ((PacketReader.getNormalFlascheAnzahlStacks().containsKey(player.getUniqueId()) && !checkValidAnvilInput(PacketReader.getNormalFlascheAnzahlStacks().get(player.getUniqueId()))) || toManytoDrop != -1) {
                 valueStack = "§c" + PacketReader.getNormalFlascheAnzahlStacks().get(player.getUniqueId());
             }
             String valueAnzahl = "0";
 
             if (normalFlaschenAnzahlValidInput(player) && PacketReader.getNormalFlascheAnzahl().containsKey(player.getUniqueId())) {
                 valueAnzahl = PacketReader.getNormalFlascheAnzahl().get(player.getUniqueId());
-            } else if (PacketReader.getNormalFlascheAnzahl().containsKey(player.getUniqueId()) && !checkValidAnvilInput(PacketReader.getNormalFlascheAnzahl().get(player.getUniqueId()))) {
+            } else if ((PacketReader.getNormalFlascheAnzahl().containsKey(player.getUniqueId()) && !checkValidAnvilInput(PacketReader.getNormalFlascheAnzahl().get(player.getUniqueId()))) || toManytoDrop != -1) {
                 valueAnzahl = "§c" + PacketReader.getNormalFlascheAnzahl().get(player.getUniqueId());
             }
 
-            content.addGuiItem(30, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Stack Angabe: §a" + valueStack).build(), () -> {
+            content.addGuiItem(30, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Stack Angabe: §a" + valueStack).setMultiLineLore("Gib an, wie viele Stacks /n Erfahrungsflaschen du /n erstellen möchtest.", "/n", "§7", false).build(), () -> {
                 saveMenus(player);
                 InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
                 AnvilMenuManager.levelFix(player);
-                AnvilMenuManager.createAnvilMenu(player, new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName(" ").setMultiLineLore("Gib an wieviele Stacks /n Erfahrungsflaschen du erstellen /n möchtest.", "/n", "§7", false).build(), "Stacks");
+                AnvilMenuManager.createAnvilMenu(player, new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName(" ").setMultiLineLore("Gib an, wie viele Stacks /n Erfahrungsflaschen du /n erstellen möchtest.", "/n", "§7", false).build(), "Stacks");
             }));
-            content.addGuiItem(31, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Anzahl Angabe: §a" + valueAnzahl).build(), () -> {
+            content.addGuiItem(31, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§6Einzelangabe: §a" + valueAnzahl).setMultiLineLore("Gib an, wie viele einzelne /n Erfahrungsflaschen du /n erstellen möchtest.", "/n", "§7", false).build(), () -> {
                 saveMenus(player);
                 InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
                 AnvilMenuManager.levelFix(player);
-                AnvilMenuManager.createAnvilMenu(player, new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName(" ").setMultiLineLore("Platzhalter", "/n", "§7", false).build(), "Anzahl");
+                AnvilMenuManager.createAnvilMenu(player, new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName(" ").setMultiLineLore("Gib an, wie viele einzelne /n Erfahrungsflaschen du /n erstellen möchtest.", "/n", "§7", false).build(), "Einzelangabe");
             }));
         }
     }
@@ -321,11 +346,7 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
         if (input.startsWith(" ")) {
             input = input.replaceFirst(" ", "");
         }
-        if (!input.matches("[0-9]+")) {
-            return false;
-        }
-
-        return true;
+        return input.matches("[0-9]+");
     }
 
     private void setResultBottle(int xpWert, int anzahl, Player player) {
@@ -363,7 +384,7 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
                     InventoryMenuManager.getInstance().closeMenu(player, CloseReason.CHANGEMENU);
                     InventoryMenuManager.getInstance().openMenu(player, new ConfirmBottleDropMenu(flaschen, xpWert, false));
                 } else {
-                    toManytoDrop = true;
+                    toManytoDrop = 36 + emptySlotsSize;
                     InventoryMenuManager.getInstance().refreshMenu(player);
                 }
             }
@@ -378,10 +399,8 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
     private void saveMenus(Player p) {
         MenuView a = InventoryMenuManager.getInstance().getOpenMenu(p);
         @SuppressWarnings("unchecked")
-        LinkedList<TrippleWrapper<CustomMenu, InventoryContent, Task>> tempOpenMenus = (LinkedList<TrippleWrapper<CustomMenu, InventoryContent, Task>>) ReflectionUtils.accessField(MenuView.class, a, "openMenus");
+        LinkedList<TrippleWrapper<CustomMenu, InventoryContent, Task>> tempOpenMenus = ReflectionUtils.accessField(MenuView.class, a, "openMenus");
         List<CustomMenu> t = tempOpenMenus.stream().map(TrippleWrapper::getValue1).toList();
         PacketReader.openMenus.put(p.getUniqueId(), t);
     }
-
-    //int emptySlotsSize = (int) Arrays.stream(player.getInventory().getStorageContents()).filter(item -> item == null || item.getType() == Material.AIR).count();
 }

@@ -70,6 +70,7 @@ public class ConfirmBottleDropMenu  extends CustomMenu implements Closeable, Slo
             int counter = 0;
 
             int c = 0;
+            int flaschenSize = flaschen.size();
 
             for (ItemStack itemStack : flaschen) {
                 c++;
