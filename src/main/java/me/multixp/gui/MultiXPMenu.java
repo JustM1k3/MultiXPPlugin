@@ -47,15 +47,27 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
         headLore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Erfahrungswert: <green>" + ExpManager.getPlayerEXP(player)));
 
         content.addGuiItem(13, new InventoryItem(new SkullManager(player).setDisplayName("§9EXP-Info §7von §6"+ player.getName()).setLoreComponent(headLore).build(), ()->{}));
-        content.addGuiItem(29, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§5Create").setMultiLineLore("Wandelt deine Level zu MultiXP- oder Erfahrungsflaschen um.", 4, "§7", false).build(), ()->{
+        content.addGuiItem(29, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§5Create §8(/MultiXP create)").setMultiLineLore("Wandelt deine Level zu MultiXP- oder Erfahrungsflaschen um.", 4, "§7", false).build(), ()->{
+            if (!player.hasPermission("multixp.create")){
+                Chat.sendErrorMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Du hast nicht die benötigten Rechte um dies zu tun!");
+                return;
+            }
             InventoryMenuManager.getInstance().closeMenu(player);
             InventoryMenuManager.getInstance().openMenu(player, new MultiXPCreate());
         }));
-        content.addGuiItem(31, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§5Merge").setMultiLineLore("Kombiniert alle MultiXP Flaschen in /n deinem Inventar zu einer MultiXP Flasche.","/n", "§7", false).build(), ()-> {
+        content.addGuiItem(31, new InventoryItem(new ItemManager(Material.ANVIL).setDisplayName("§5Merge §8(/MultiXP merge)").setMultiLineLore("Kombiniert alle MultiXP Flaschen /n in deinem Inventar zu einer /n MultiXP Flasche.","/n", "§7", false).build(), ()-> {
+            if (!player.hasPermission("multixp.merge")){
+                Chat.sendErrorMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Du hast nicht die benötigten Rechte um dies zu tun!");
+                return;
+            }
             ExpManager.multiXPMerge(player);
         }));
 
-        content.addGuiItem(33, new InventoryItem(new ItemManager(Material.GLASS_BOTTLE).setDisplayName("§fZero").setMultiLineLore("Fügt den Erfahrungswert deiner MultiXP Flaschen und Erfahrungsflaschen deinem Levelstand hinzu.",4,"§7", false).build(), ()->{
+        content.addGuiItem(33, new InventoryItem(new ItemManager(Material.GLASS_BOTTLE).setDisplayName("§fZero §8(/MultiXP zero)").setMultiLineLore("Fügt den Erfahrungswert der MultiXP- /n und Erfahrungsflaschen aus deinem /n Inventar deinem Levelstand hinzu und / entfernt sie aus deinem Inventar.", "/n", "§7", false).build(), ()->{
+            if (!player.hasPermission("multixp.zero")){
+                Chat.sendErrorMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Du hast nicht die benötigten Rechte um dies zu tun!");
+                return;
+            }
             ExpManager.setPlayerInvItemExpValue(player);
             InventoryMenuManager.getInstance().refreshMenu(player);
         }));

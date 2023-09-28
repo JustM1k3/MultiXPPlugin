@@ -73,7 +73,7 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
 
         if (!(levelAngabeValidInput(player) && normalFlaschenAnzahlStackValidInput(player) && normalFlaschenAnzahlValidInput(player))) {
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
-            content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lUngültige Eingabe").setMultiLineLore("Eine deiner Eingaben /n ist ungültig!", "/n", "§c", false).build(), ()->{
+            content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lFehler").setMultiLineLore("Die Eingabe darf nur /n Zahlen beinhalten!", "/n", "§c", false).build(), () -> {
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
             }));
         } else {
@@ -354,6 +354,11 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
         int rest = anzahl % 64;
 
         ArrayList<Component> lore = new ArrayList<>();
+        if(anzahl > 1){
+            lore.add(MiniMessage.miniMessage().deserialize("<!italic><dark_gray>[Klicke, um die Flaschen zu erhalten]"));
+        }else{
+            lore.add(MiniMessage.miniMessage().deserialize("<!italic><dark_gray>[Klicke, um die Flasche zu erhalten.]"));
+        }
         lore.add(MiniMessage.miniMessage().deserialize("<!italic><dark_gray><>-------------------<>"));
 
         if (stacks != 0 && rest != 0) {
@@ -370,6 +375,11 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
                 ExpManager.removeExpFromPlayer(player, xpWert);
                 for (int i = 0; i < anzahl; i++) {
                     player.getInventory().addItem(new ItemStack(Material.EXPERIENCE_BOTTLE));
+                }
+                if(anzahl > 1){
+                    Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Erfahrungsflaschen erfolgreich erstellt!");
+                }else{
+                    Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Erfahrungsflasche erfolgreich erstellt!");
                 }
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
                 InventoryMenuManager.getInstance().closeMenu(player);

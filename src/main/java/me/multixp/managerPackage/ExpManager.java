@@ -186,11 +186,11 @@ public class ExpManager {
             }
         }
         if (xpValue == 0){
-            Chat.sendErrorMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Du hast keine Erfahrungsflaschen in deinem Inventar die du lutschen kannst L O S E R");
+            Chat.sendErrorMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Du hast keine MultiXP- oder Erfahrungsflaschen die deiner Erfahrungsleiste angerechnet werden können!");
         } else {
             player.giveExp(xpValue, false);
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
-            Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Deine Erfahrungsflaschen wurde erfolgreich von dir leer gelutscht mhh lecker :D");
+            Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Deine MultiXP- und Erfahrungsflaschen wurden erfolgreich deiner Erfahrungsleiste angerechnet.");
         }
     }
 

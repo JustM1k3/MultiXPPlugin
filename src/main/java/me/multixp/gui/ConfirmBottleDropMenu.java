@@ -98,9 +98,17 @@ public class ConfirmBottleDropMenu  extends CustomMenu implements Closeable, Slo
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
 
             if (multiXpFlaschen) {
-                Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flasche erfolgreich erstellt!");
+                if(flaschenSize > 1){
+                    Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flaschen erfolgreich erstellt!");
+                }else{
+                    Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flasche erfolgreich erstellt!");
+                }
             } else {
-                Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Erfahrungsflaschen erfolgreich erstellt!");
+                if(flaschenSize > 1){
+                    Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Erfahrungsflaschen erfolgreich erstellt!");
+                }else{
+                    Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Erfahrungsflasche erfolgreich erstellt!");
+                }
             }
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
             InventoryMenuManager.getInstance().closeMenu(player);

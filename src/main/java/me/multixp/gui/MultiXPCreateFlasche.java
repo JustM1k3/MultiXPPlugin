@@ -61,7 +61,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
         content.fill(37,44, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), ()->{}));
 
         if(!(checkValidAnvilInputLevelAnzahl(player) && checkValidAnvilInputFlaschenAnzahl(player))){
-            content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lUngültige Eingabe").setMultiLineLore("Die angegebene Levelanzahl/Flaschenanzahl /n ist ungültig!", "/n", "§c", false).build(), ()->{}));
+            content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lFehler").setMultiLineLore("Die Eingabe darf nur /n Zahlen beinhalten!", "/n", "§c", false).build(), ()->{}));
         } else {
             content.addGuiItem(33, new InventoryItem(new ItemStack(Material.AIR), ()->{}));
         }
@@ -107,8 +107,8 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
 
         if (toManytoDrop != -1){
             setRedBorder(player);
-            content.addGuiItem(33,new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("Fehler - Platzhalter").setMultiLineLore("Platzhalter","/n","§c",false).build(),()->{}));
-            toManytoDrop = false;
+            content.addGuiItem(33,new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lFehler").setMultiLineLore("Die Flaschenanzahl ist zu groß! /n Es können maximal 10 Stacks /n Erfahrungsflaschen aus deinem /n Inventar gedroppt werden. Du /n kannst aktuell maximal " + toManytoDrop + " Stacks /n Flaschen erstellen!","/n","§c",false).build(),()->{}));
+            toManytoDrop = -1;
         }
 
         createAnvilItem(player);
@@ -120,7 +120,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
         if(!(checkValidAnvilInputLevelAnzahl(player) && checkValidAnvilInputFlaschenAnzahl(player))){
             material = Material.RED_STAINED_GLASS_PANE;
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
-            content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lUngültige Eingabe").setMultiLineLore("Die eingegebene Levelanzahl/Flaschenanzahl ist ungültig!", "/n", "§c", false).build(), ()->{
+            content.addGuiItem(33, new InventoryItem(new ItemManager(Material.BARRIER).setDisplayName("§c§lFehler").setMultiLineLore("Die eingegebene Levelanzahl/Flaschenanzahl ist ungültig!", "/n", "§c", false).build(), ()->{
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.65f, 0.8f);
             }));
         }
@@ -171,7 +171,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
 
     private void switchAngabe(Player player) {
         if (switchAngabeVar == 2) {
-            content.addGuiItem(29, new InventoryItem(new ItemManager(Material.YELLOW_CONCRETE).setDisplayName("§6Angabe: §aLevel").setMultiLineLore("§8[Klicke um die Angabe zu wechseln] /n /n Bei dieser Angabe wird eine MultiXP /n Flasche erstellt, welche genau die /n Levelanzahl beinhaltet, die als /n Zahl angegeben wurde. Somit erhält /n der Spieler, wenn er Level 0 ist, /n genau die angegebene Levelanzahl nach /n Benutzung der MultiXP Flasche. ", "/n", "§7", false).build(), () -> {
+            content.addGuiItem(29, new InventoryItem(new ItemManager(Material.YELLOW_CONCRETE).setDisplayName("§6Angabe: §aLevel").setMultiLineLore("§8[Klicke, um die Angabe zu wechseln] /n /n Bei dieser Angabe wird eine MultiXP /n Flasche erstellt, welche genau die /n Levelanzahl beinhaltet, die als /n Zahl angegeben wurde. Somit erhält /n der Spieler, wenn er Level 0 ist, /n genau die angegebene Levelanzahl nach /n Benutzung der MultiXP Flasche. ", "/n", "§7", false).build(), () -> {
                 switchAngabeVar = 0;
                 switchAngabe(player);
                 PacketReader.getFlaschenAnzahlInput().remove(player.getUniqueId());
@@ -180,7 +180,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
                 InventoryMenuManager.getInstance().getOpenMenu(player).refresh();
             }));
         } else if (switchAngabeVar == 1) {
-            content.addGuiItem(29, new InventoryItem(new ItemManager(Material.ORANGE_CONCRETE).setDisplayName("§6Angabe: §5Erfahrungswert").setMultiLineLore("§8[Klicke um die Angabe zu wechseln] /n /n Bei dieser Angabe werden die /n angegeben Erfahrungpunkte vom /n Spieler abgezogeb und in eine /n MultiXP Flasche gefüllt.", "/n", "§7", false).build(), () -> {
+            content.addGuiItem(29, new InventoryItem(new ItemManager(Material.ORANGE_CONCRETE).setDisplayName("§6Angabe: §5Erfahrungswert").setMultiLineLore("§8[Klicke, um die Angabe zu wechseln] /n /n Bei dieser Angabe werden die /n angegeben Erfahrungspunkte vom /n Spieler abgezogen und in eine /n MultiXP Flasche gefüllt.", "/n", "§7", false).build(), () -> {
                 switchAngabeVar = 2;
                 switchAngabe(player);
                 PacketReader.getFlaschenAnzahlInput().remove(player.getUniqueId());
@@ -189,7 +189,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
                 InventoryMenuManager.getInstance().getOpenMenu(player).refresh();
             }));
         } else{
-             content.addGuiItem(29, new InventoryItem(new ItemManager(Material.GREEN_CONCRETE).setDisplayName("§6Angabe: §9Level").setMultiLineLore("§8[Klicke um die Angabe zu wechseln] /n /n Bei dieser Angabe wird dir die /n angegeben Zahl unten in der Levelleiste abgezogen. /n Da die Level von deinem momentanen Levelstand /n abgezogen werden, enthält die Flasche bei /n gleich gewählter Zahl trotzdem mehr Erfahrungspunkte /n je höher dein Levelstand ist.", "/n", "§7", false).build(), () -> {
+             content.addGuiItem(29, new InventoryItem(new ItemManager(Material.GREEN_CONCRETE).setDisplayName("§6Angabe: §9Level").setMultiLineLore("§8[Klicke, um die Angabe zu wechseln] /n /n Bei dieser Angabe wird dir die /n angegebene Zahl unten in der Erfahrungsleiste abgezogen. /n Da die Level von deinem momentanen Levelstand /n abgezogen werden, enthält die Flasche bei /n gleich gewählter Zahl trotzdem mehr Erfahrungspunkte /n je höher dein Levelstand ist.", "/n", "§7", false).build(), () -> {
                  switchAngabeVar = 1;
                  switchAngabe(player);
                  PacketReader.getFlaschenAnzahlInput().remove(player.getUniqueId());
@@ -313,6 +313,11 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
 
     private void setResultBottle(int xpWert, int lvl, int anzahl, Player player){
         ArrayList<Component> lore = new ArrayList<>();
+        if(anzahl > 1){
+            lore.add(MiniMessage.miniMessage().deserialize("<!italic><dark_gray>[Klicke, um die Flaschen zu erhalten]"));
+        }else{
+            lore.add(MiniMessage.miniMessage().deserialize("<!italic><dark_gray>[Klicke, um die Flasche zu erhalten.]"));
+        }
         lore.add(MiniMessage.miniMessage().deserialize("<!italic><dark_gray><>---------------------------<>"));
         lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Level: <green>" + lvl));
         lore.add(ExpManager.createExperienceBar(xpWert, lvl));
@@ -333,7 +338,11 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
                 flaschen.forEach(flasche -> player.getInventory().addItem(flasche));
                 ExpManager.removeExpFromPlayer(player, xpWert * anzahl);
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
-                Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flasche erfolgreich erstellt!");
+                if(anzahl > 1){
+                    Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flaschen erfolgreich erstellt!");
+                }else{
+                    Chat.sendSuccessMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "MultiXP Flasche erfolgreich erstellt!");
+                }
                 InventoryMenuManager.getInstance().closeMenu(player);
             } else {
                 int emptySlotsSize = (int) Arrays.stream(player.getInventory().getStorageContents()).filter(item -> item == null || item.getType() == Material.AIR).count();
