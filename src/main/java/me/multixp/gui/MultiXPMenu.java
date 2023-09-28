@@ -63,7 +63,7 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
             ExpManager.multiXPMerge(player);
         }));
 
-        content.addGuiItem(33, new InventoryItem(new ItemManager(Material.GLASS_BOTTLE).setDisplayName("§fZero §8(/MultiXP zero)").setMultiLineLore("Fügt den Erfahrungswert der MultiXP- /n und Erfahrungsflaschen aus deinem /n Inventar deinem Levelstand hinzu und / entfernt sie aus deinem Inventar.", "/n", "§7", false).build(), ()->{
+        content.addGuiItem(33, new InventoryItem(new ItemManager(Material.GLASS_BOTTLE).setDisplayName("§fZero §8(/MultiXP zero)").setMultiLineLore("Fügt den Erfahrungswert der MultiXP- /n und Erfahrungsflaschen aus deinem /n Inventar deinem Levelstand hinzu und /n entfernt sie aus deinem Inventar.", "/n", "§7", false).build(), ()->{
             if (!player.hasPermission("multixp.zero")){
                 Chat.sendErrorMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Du hast nicht die benötigten Rechte um dies zu tun!");
                 return;
