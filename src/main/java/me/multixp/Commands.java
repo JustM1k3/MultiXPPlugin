@@ -81,7 +81,6 @@ public class Commands implements PlayerCommand {
             }
             Player p = (Player)player.getPlayer(true);
             ExpManager.setPlayerInvItemExpValue(p);
-            p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.65f, 0.8f);
             return true;
         }
     }

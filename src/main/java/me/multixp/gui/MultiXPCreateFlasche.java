@@ -316,7 +316,7 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
         if(anzahl > 1){
             lore.add(MiniMessage.miniMessage().deserialize("<!italic><dark_gray>[Klicke, um die Flaschen zu erhalten]"));
         }else{
-            lore.add(MiniMessage.miniMessage().deserialize("<!italic><dark_gray>[Klicke, um die Flasche zu erhalten.]"));
+            lore.add(MiniMessage.miniMessage().deserialize("<!italic><dark_gray>[Klicke, um die Flasche zu erhalten]"));
         }
         lore.add(MiniMessage.miniMessage().deserialize("<!italic><dark_gray><>---------------------------<>"));
         lore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Level: <green>" + lvl));
