@@ -202,7 +202,7 @@ public class ExpManager {
                 itemList.add(item);
             }
         }
-        if (itemList.size() < 2) {
+        if (itemList.isEmpty() || (itemList.size() == 1 && itemList.get(0).getAmount() == 1)) {
             Chat.sendErrorMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Es können keine MultiXP Flaschen in deinem Inventar zusammengefügt werden!");
             return;
         }
