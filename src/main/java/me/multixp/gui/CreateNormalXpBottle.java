@@ -60,7 +60,8 @@ public class CreateNormalXpBottle extends CustomMenu implements Closeable, SlotC
         content.fill(37, 44, new InventoryItem(new ItemManager(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build(), () -> {
         }));
 
-        content.addGuiItem(13, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§dErfahrungsflasche").setMultiLineLore("Klicke auf den farbigen Beton, /n um zwischen den beiden /n Angabemöglichkeiten zu /n wechseln. Über die Ambosse kannst du die Levelanzahl und /n die Flaschenanzahl ändern.", "/n", "§7", false).build(), () -> {
+        content.addGuiItem(14, new InventoryItem(ExpManager.getPlayerExpInfoHead(player), ()->{}));
+        content.addGuiItem(12, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§dErfahrungsflasche").setMultiLineLore("Klicke auf den farbigen Beton, um /n zwischen den beiden Angabemöglichkeiten /n zu wechseln. Über die Ambosse /n kannst du die Levelanzahl und /n die Flaschenanzahl ändern.", "/n", "§7", false).build(), () -> {
         }));
 
         content.addGuiItem(47, new InventoryItem(new ItemManager(Material.ARROW).setDisplayName("§c§lZurück").build(), () -> {

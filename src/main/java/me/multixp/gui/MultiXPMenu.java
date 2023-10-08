@@ -41,7 +41,6 @@ public class MultiXPMenu extends CustomMenu implements Closeable, SlotCondition 
 
         content.addGuiItem(13, new InventoryItem(ExpManager.getPlayerExpInfoHead(player), ()->{}));
 
-        content.addGuiItem(13, new InventoryItem(new SkullManager(player).setDisplayName("§9EXP-Info §7von §6"+ player.getName()).setLoreComponent(headLore).build(), ()->{}));
         content.addGuiItem(29, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§5Create §8(/MultiXP create)").setMultiLineLore("Wandelt deine Level zu MultiXP- oder Erfahrungsflaschen um.", 4, "§7", false).build(), ()->{
             if (!player.hasPermission("multixp.create")){
                 Chat.sendErrorMessage(PREFIX, me.oxolotel.utils.wrapped.player.Player.of(player), "Du hast nicht die benötigten Rechte um dies zu tun!");
