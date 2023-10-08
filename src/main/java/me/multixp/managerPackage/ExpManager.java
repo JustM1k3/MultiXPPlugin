@@ -225,7 +225,7 @@ public class ExpManager {
     public static ItemStack getPlayerExpInfoHead(Player player){
         ArrayList<Component> headLore = new ArrayList<>();
         headLore.add(MiniMessage.builder().build().deserialize("<!italic><gray>Level: <green>" + player.getLevel() + " ").append(ExpManager.createExperienceBar(ExpManager.getPlayerEXP(player), player.getLevel())).append(MiniMessage.miniMessage().deserialize(" <green>" + ((int)(player.getExp() * 100)) + "%")));
-        headLore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Erfahrungspunkte bis zum Levelup: <green>" + ((int)(ExpManager.getExpFromLevel(player.getLevel() + 1) - ExpManager.getPlayerEXP(player)))));
+        headLore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>EXP bis zum Levelup: <green>" + ((int)(ExpManager.getExpFromLevel(player.getLevel() + 1) - ExpManager.getPlayerEXP(player)))));
         headLore.add(MiniMessage.miniMessage().deserialize(" "));
         headLore.add(MiniMessage.miniMessage().deserialize("<!italic><gray>Erfahrungspunkte: <green>" + ExpManager.getPlayerEXP(player)));
 
