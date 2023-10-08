@@ -65,8 +65,8 @@ public class MultiXPCreateFlasche extends CustomMenu implements Closeable, SlotC
         } else {
             content.addGuiItem(33, new InventoryItem(new ItemStack(Material.AIR), ()->{}));
         }
-
-        content.addGuiItem(13, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setMultiLineLore("Klicke auf den farbigen Beton, /n um zwischen den drei Angabemöglichkeiten /n zu wechseln. Über die Ambosse /n kannst du die Levelanzahl und /n Flaschenanzahl ändern.", "/n", "§7", false).build(), ()->{}));
+        content.addGuiItem(14, new InventoryItem(ExpManager.getPlayerExpInfoHead(player), ()->{}));
+        content.addGuiItem(12, new InventoryItem(new ItemManager(Material.EXPERIENCE_BOTTLE).setDisplayName("§6§kKK§dMultiXP Flasche§6§kKK").setMultiLineLore("Klicke auf den farbigen Beton, /n um zwischen den drei Angabemöglichkeiten /n zu wechseln. Über die Ambosse /n kannst du die Levelanzahl und /n Flaschenanzahl ändern.", "/n", "§7", false).build(), ()->{}));
 
         switchAngabe(player);
 
