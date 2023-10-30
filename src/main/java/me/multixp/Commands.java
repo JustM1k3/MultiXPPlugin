@@ -76,7 +76,7 @@ public class Commands implements PlayerCommand {
                     "<color:#72CA5E><hover:show_text:'/multixp merge ausführen'><click:run_command:/multixp merge>/multiXP merge <gray>- Kombiniert alle MultiXP Flaschen in deinem Inventar zu einer MultiXP Flasche</click></hover>",
                     "<color:#72CA5E><hover:show_text:'/multixp zero ausführen'><click:run_command:/multixp zero>/multiXP zero <gray>- Fügt den Erfahrungswert der MultiXP- und Erfahrungsflaschen aus deinem Inventar deinem Levelstand hinzu und entfernt sie aus deinem Inventar</click></hover>",
                     "<color:#72CA5E><hover:show_text:'/multixp create ausführen'><click:run_command:/multixp create>/multiXP create <gray>- Öffnet das MultiXP - Create Menü</click></hover>",
-                    "<color:#72CA5E><hover:show_text:'Shift-Click um \"/multixp deposit\" einzufügen'><insert:/multixp deposit>/multiXP deposit <Levelanzahl> <gray>- Wandelt die Angegebene Levelanzahl in Erfahrungsflaschen um</insert></hover>");
+                    "<color:#72CA5E><hover:show_text:'Click um \"/multixp deposit\" einzufügen'><click:suggest_command:/multixp deposit>/multiXP deposit <Levelanzahl> <gray>- Wandelt die Angegebene Levelanzahl in Erfahrungsflaschen um</click></hover>");
 
             Chat.sendUnformattedMessage(player , MiniMessage.miniMessage().deserialize(message));
 
